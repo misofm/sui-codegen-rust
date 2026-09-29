@@ -51,7 +51,7 @@ let record = listing::purchase(
 
 Inputs are added in parameter order, pure values are never de-duplicated, and shared-object
 mutability is merged across uses — `@mysten/sui`'s rules. (Byte parity is proven for Miso's
-purchase flow by golden vectors in `misofm/core`; a general differential harness is next.) A value of the wrong
+purchase flow by golden vectors in `misofm/platform`; a general differential harness is next.) A value of the wrong
 Move type, or a normal object where a `Receiving<T>` is expected, does not compile.
 
 See [docs/PLAN.md](docs/PLAN.md) for the design and [docs/SPEC.md](docs/SPEC.md) for the

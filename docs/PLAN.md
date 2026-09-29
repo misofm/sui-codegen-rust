@@ -152,7 +152,7 @@ completeness is checked at compile time; loaded from `deployments/<network>.json
    positional, empty struct, generic constraints, hot potato, Receiving, multi/reference
    returns, private entry, FRIEND+entry, TxContext `&`/`&mut`, generic params. Upgrade semantics
    covered by the DeepBook mainnet corpus (localnet upgrade fixture deferred).
-10. **Integration**: misofm/core purchase recipe on generated bindings passes all golden vectors.
+10. **Integration**: misofm/platform purchase recipe on generated bindings passes all golden vectors.
 
 ## 5. Milestones [v2 H5]
 - **M0** Repo, workspace, toolchain 1.97.1, CI (fmt, clippy, test, wasm32), SPEC skeleton,
@@ -165,7 +165,7 @@ completeness is checked at compile time; loaded from `deployments/<network>.json
 - **M3** Calls renderer, `IntoCallArg`/lazy materialization/mutability merge/system injection,
   targets + signatures, events; PTB parity harness; trybuild.
 - **M4 — vertical slice**: generate bindings for Miso record/record_shop (+ needed framework),
-  port `misofm/core` purchase build + inspect + `derive_sale_ids` onto them; all 10 build and
+  port `misofm/platform` purchase build + inspect + `derive_sale_ids` onto them; all 10 build and
   51 inspect golden vectors pass; wasm size delta vs 191 KB brotli recorded.
 - **M5** Breadth + polish: summaries merge (names/docs), `--check`/`explain`/`diff`, miette
   diagnostics, clever errors, framework crate with feature graph, perf budgets, SPEC coverage
@@ -183,7 +183,7 @@ fuzzing, zero-alloc `matches`, clever errors, explain/diff, framework crate — 
    the ABI tables are needed (not a VM loader), which keeps it small. Mysten's crate is the oracle
    (`oracle/`, path deps on a pinned sparse checkout), not a dependency.
 2. **Milestone order:** M1 = reader + lock refresh; **M2 = vertical slice** (naive lowering of
-   record/record_shop/balance, misofm/core's 10 build goldens + wasm size delta); M3 = hardened
+   record/record_shop/balance, misofm/platform's 10 build goldens + wasm size delta); M3 = hardened
    passes/types; M4 = calls/parity harness; M5 = breadth.
 3. **Object handles:** kind is always explicit (`as_owned`/`as_shared`/receiving); lazy shared
    handles start with `mutable: None` and are OR-merged per use (by-value and non-MoveCall uses —

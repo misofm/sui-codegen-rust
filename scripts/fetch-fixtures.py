@@ -13,15 +13,21 @@ ENDPOINTS = {
     "mainnet": "https://graphql.mainnet.sui.io/graphql",
     "testnet": "https://graphql.testnet.sui.io/graphql",
 }
+SYSTEM_OBJECTS = ["0x5", "0x6", "0x8", "0xa", "0xc", "0xd", "0x403", "0xacc"]
+CHAIN_QUERY = """query($keys: [ObjectKey!]!) {
+  chainIdentifier
+  checkpoint { sequenceNumber }
+  multiGetObjects(keys: $keys) { address owner { __typename ... on Shared { initialSharedVersion } } }
+}"""
 QUERY = """query($a: SuiAddress!) {
   checkpoint { sequenceNumber }
   package(address: $a) { address version digest packageBcs linkage { originalId upgradedId version } }
 }"""
 
-def gql(network, variables):
+def gql(network, variables, query=None):
     req = urllib.request.Request(
         ENDPOINTS[network],
-        data=json.dumps({"query": QUERY, "variables": variables}).encode(),
+        data=json.dumps({"query": query or QUERY, "variables": variables}).encode(),
         headers={"content-type": "application/json", "user-agent": "movegen-fixtures"},
     )
     with urllib.request.urlopen(req, timeout=60) as r:
@@ -55,6 +61,15 @@ def main():
             for link in pkg["linkage"] or []:
                 queue.append((f"dep:{link['originalId'][:10]}", link["upgradedId"]))
         manifest.sort(key=lambda m: (m["name"], m["storage_id"]))
+        chain = gql(network, {"keys": [{"address": a} for a in SYSTEM_OBJECTS]}, CHAIN_QUERY)
+        (out / "chain.json").write_text(json.dumps({
+            "chain_identifier": chain["chainIdentifier"],
+            "checkpoint": chain["checkpoint"]["sequenceNumber"],
+            "system_objects": {
+                o["address"]: o["owner"]["initialSharedVersion"]
+                for o in chain["multiGetObjects"] if o and o["owner"]["__typename"] == "Shared"
+            },
+        }, indent=2) + "\n")
         (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
         print(f"{network}: {len(manifest)} packages")
 

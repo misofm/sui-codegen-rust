@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/movegen-bytecode"]
+members = ["crates/movegen-bytecode", "crates/movegen", "crates/movegen-cli"]
 resolver = "3"
 
 [workspace.package]
@@ -12,6 +12,8 @@ repository = "https://github.com/misofm/sui-codegen-rust"
 
 [workspace.dependencies]
 movegen-bytecode = { path = "crates/movegen-bytecode", version = "0.1.0" }
+movegen = { path = "crates/movegen", version = "0.1.0" }
+toml = "1.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "2.0"

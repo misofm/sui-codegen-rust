@@ -36,9 +36,21 @@ decoded only to skip them. Supported bytecode versions: 6 and 7 (the on-chain ra
 | B-ORACLE-1 | For every module in the corpus (0x1, 0x2, 0x3, DeepBook, all Miso packages and their linked dependencies, mainnet and testnet), the normalized view equals Mysten's `move-binary-format` output. | `oracle/` |
 | B-ORACLE-2 | For systematically corrupted corpus modules (bit flips at strided positions, truncations, a trailing byte), with Mysten's loader in Sui's configuration (v6–v7, no extraneous bytes, no global storage): if both accept, the ABIs are identical; if we reject and Mysten accepts, the reason is B-ABI-1–3; Mysten never rejects a module we accept. Dense run: 289,453 mutants, 0 exceptions. | `oracle/` |
 
+## L — lock and refresh (`movegen`)
+
+| Rule | Statement |
+|---|---|
+| L-CLO-1 | The lock holds the configured packages and their full dependency closure: every linkage entry of every fetched package is fetched, one batched request per dependency level. Each package is read at the latest version of its lineage. |
+| L-SYM-1 | ABIs are symbolized: every id in a package's lineage (original id, storage id, type-origin defining ids, linked versions) becomes `@name`. An address outside the closure is an error. |
+| L-SYM-2 | Configured packages use their config name. Unnamed dependencies are `std`/`sui`/`sui_system`/`bridge`/`deepbook_v2` for system packages, otherwise `pkg_<first module name>` — identical on every network. Two packages with one name is an error asking for a config name. |
+| L-DEP-1 | `deployments/<network>.json` records the chain identifier, checkpoint, and per package the original id, `published_at` (latest storage id), version, type origins (`module::Datatype` → defining id) and linkage (dependency symbol → linked storage id and version). |
+| L-DEP-2 | Well-known shared objects (`sui_system_state` 0x5, `clock` 0x6, `random` 0x8, `address_alias_state` 0xa, `coin_registry` 0xc, `display_registry` 0xd, `deny_list` 0x403, `accumulator_root` 0xacc) are recorded with their per-network initial shared versions. |
+| L-DET-1 | Lock files are deterministic, pretty-printed JSON with a trailing newline; writing an identical lock changes no files; files the lock no longer contains are removed. |
+| L-DET-2 | Refreshing an up-to-date lock changes no files (the previous checkpoint is kept when nothing else changed). |
+| L-NET-1 | Networks are compared on symbolized ABIs; differences are reported (per module/function) against the reference network. |
+
 ## Later sections (added as milestones land)
 
-- **L** — lock format and symbolization
 - **R** — resolution (mirrors `sui-package-resolver`)
 - **A** — argument kinds and callability
 - **N** — naming

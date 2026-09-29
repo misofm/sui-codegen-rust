@@ -25,6 +25,11 @@ impl<'a> Cursor<'a> {
         self.bytes.len() - self.pos
     }
 
+    /// The bytes from `start` to the current position.
+    pub(crate) fn slice_from(&self, start: usize) -> &'a [u8] {
+        &self.bytes[start..self.pos]
+    }
+
     pub(crate) fn u8(&mut self, what: &'static str) -> Result<u8, Error> {
         let byte = *self.bytes.get(self.pos).ok_or(Error::Eof(what))?;
         self.pos += 1;

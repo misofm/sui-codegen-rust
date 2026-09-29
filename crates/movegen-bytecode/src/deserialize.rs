@@ -1,15 +1,20 @@
 //! Module deserialization, mirroring `move-binary-format`'s `deserializer.rs` at Sui
 //! `mainnet-v1.80.1` for the tables in [`CompiledModule`]. Rule ids refer to `docs/SPEC.md`.
+//!
+//! Zero-copy: everything borrows from the input. Tables are read in a fixed order — every table
+//! but function definitions, then the table-level bounds checks, then function definitions,
+//! whose code is bounds-checked inline and discarded. The accepted set equals reading all tables
+//! first and checking afterwards (as Mysten does); the oracle tests enforce that.
 
-use std::collections::HashSet;
-
+use crate::bounds::{self, CodeChecker};
 use crate::cursor::Cursor;
 use crate::error::{Error, TableKind};
 use crate::model::{
-    AbilitySet, Address, CodeUnit, CompiledModule, Constant, DatatypeHandle, DatatypeTypeParameter,
-    EnumDefinition, FieldDefinition, FunctionDefinition, FunctionHandle, ModuleHandle, Operand,
-    SignatureToken, StructDefinition, VariantDefinition, Visibility,
+    AbilitySet, CompiledModule, Constant, DatatypeHandle, DatatypeTypeParameter, EnumDefinition,
+    FieldDefinition, FunctionDefinition, FunctionHandle, ModuleHandle, Signature, StructDefinition,
+    VariantDefinition, Visibility,
 };
+use crate::sig::read_token;
 
 const MAGIC: [u8; 4] = [0xA1, 0x1C, 0xEB, 0x0B];
 const VERSION_6: u32 = 6;
@@ -22,7 +27,6 @@ const IDENTIFIER_SIZE_MAX: u64 = 65535;
 const CONSTANT_SIZE_MAX: u64 = 65535;
 const SIGNATURE_SIZE_MAX: u64 = 255;
 const TYPE_PARAMETER_COUNT_MAX: u64 = 255;
-const TYPE_PARAMETER_INDEX_MAX: u64 = 65536;
 const FIELD_COUNT_MAX: u64 = 255;
 const FIELD_OFFSET_MAX: u64 = 255;
 const ACQUIRES_COUNT_MAX: u64 = 255;
@@ -33,16 +37,16 @@ const JUMP_TABLE_INDEX_MAX: u64 = 127;
 const BYTECODE_COUNT_MAX: u64 = 65535;
 const BYTECODE_INDEX_MAX: u64 = 65535;
 const LOCAL_INDEX_MAX: u64 = 255;
-const SIGNATURE_TOKEN_DEPTH_MAX: usize = 256;
 
+#[derive(Clone, Copy)]
 struct Table {
     kind: TableKind,
     offset: u32,
     count: u32,
 }
 
-/// Reads one compiled module (B-HDR-1 … B-CODE-1).
-pub fn deserialize(binary: &[u8]) -> Result<CompiledModule, Error> {
+/// Reads one compiled module, borrowing from `binary` (B-HDR-1 … B-CODE-1).
+pub fn deserialize(binary: &[u8]) -> Result<CompiledModule<'_>, Error> {
     let mut cursor = Cursor::new(binary);
 
     // B-HDR-1
@@ -54,7 +58,6 @@ pub fn deserialize(binary: &[u8]) -> Result<CompiledModule, Error> {
     let (version, flavor) = if flavored <= VERSION_6 {
         (flavored, None)
     } else {
-        // Truncation to the flavor byte is intended.
         #[allow(clippy::cast_possible_truncation)]
         (flavored & 0x00ff_ffff, Some((flavored >> 24) as u8))
     };
@@ -64,25 +67,36 @@ pub fn deserialize(binary: &[u8]) -> Result<CompiledModule, Error> {
         return Err(Error::UnsupportedVersion { version, flavor });
     }
 
-    // B-TBL-1
+    // B-TBL-1: at most 20 distinct kinds can pass B-TBL-2, so a fixed array suffices; more
+    // headers than that must contain a duplicate.
     let table_count = cursor.uleb_max("table count", TABLE_COUNT_MAX)?;
-    let mut tables = Vec::new();
+    let mut tables = [Table {
+        kind: TableKind::ModuleHandles,
+        offset: 0,
+        count: 0,
+    }; 20];
+    let mut n = 0;
     for _ in 0..table_count {
         let kind = TableKind::from_u8(cursor.u8("table header")?)?;
         let offset = u32::try_from(cursor.uleb_max("table offset", U32_MAX)?).expect("bounded");
         let count = u32::try_from(cursor.uleb_max("table size", U32_MAX)?).expect("bounded");
-        tables.push(Table {
+        if n == tables.len() {
+            return Err(Error::BadTableHeader("duplicate table"));
+        }
+        tables[n] = Table {
             kind,
             offset,
             count,
-        });
+        };
+        n += 1;
     }
+    let tables = &mut tables[..n];
 
     // B-TBL-2 (`check_tables`)
-    tables.sort_by_key(|t| t.offset);
+    tables.sort_unstable_by_key(|t| t.offset);
     let mut end: u32 = 0;
-    let mut kinds = HashSet::new();
-    for table in &tables {
+    let mut seen = 0u32;
+    for table in tables.iter() {
         if table.offset != end {
             return Err(Error::BadTableHeader("tables are not contiguous"));
         }
@@ -92,9 +106,11 @@ pub fn deserialize(binary: &[u8]) -> Result<CompiledModule, Error> {
         end = end
             .checked_add(table.count)
             .ok_or(Error::BadTableHeader("table size overflow"))?;
-        if !kinds.insert(table.kind) {
+        let bit = 1u32 << (table.kind as u32);
+        if seen & bit != 0 {
             return Err(Error::BadTableHeader("duplicate table"));
         }
+        seen |= bit;
         if end as usize > binary.len() {
             return Err(Error::BadTableHeader("table exceeds binary"));
         }
@@ -115,90 +131,98 @@ pub fn deserialize(binary: &[u8]) -> Result<CompiledModule, Error> {
     let mut module = CompiledModule {
         version,
         self_handle,
-        module_handles: Vec::new(),
-        datatype_handles: Vec::new(),
-        function_handles: Vec::new(),
-        signatures: Vec::new(),
-        identifiers: Vec::new(),
-        addresses: Vec::new(),
-        constants: Vec::new(),
-        struct_defs: Vec::new(),
-        enum_defs: Vec::new(),
-        function_defs: Vec::new(),
-        friends: Vec::new(),
-        function_instantiations: Vec::new(),
-        struct_instantiations: Vec::new(),
-        enum_instantiations: Vec::new(),
-        field_handles: Vec::new(),
-        field_instantiations: Vec::new(),
-        variant_handles: Vec::new(),
-        variant_instantiation_handles: Vec::new(),
+        ..CompiledModule::default()
     };
-
-    for table in &tables {
+    let mut function_defs = None;
+    for table in tables.iter() {
         // B-TBL-3
         if table.kind.is_enum_table() && version < VERSION_7 {
             return Err(Error::EnumsBeforeV7);
         }
         let bytes = &data[table.offset as usize..(table.offset + table.count) as usize];
-        read_table(&mut module, table.kind, bytes, version)?;
+        if table.kind == TableKind::FunctionDefs {
+            function_defs = Some(bytes);
+        } else {
+            read_table(&mut module, table.kind, bytes)?;
+        }
     }
-    crate::bounds::check(&module)?;
+    // B-IDX-1 for every table but function definitions, then function definitions with their
+    // code checked inline.
+    let memo = bounds::check_tables(&module)?;
+    if let Some(bytes) = function_defs {
+        let mut c = Cursor::new(bytes);
+        let mut defs = Vec::new();
+        {
+            let checker = CodeChecker::new(&module, &memo);
+            while !c.is_empty() {
+                defs.push(function_def(&mut c, version, &checker)?);
+            }
+        }
+        module.function_defs = defs;
+    }
     Ok(module)
 }
 
 /// Reads a whole table; entries must exactly fill `bytes` (B-TBL-3).
-fn read_table(
-    module: &mut CompiledModule,
+fn read_table<'a>(
+    m: &mut CompiledModule<'a>,
     kind: TableKind,
-    bytes: &[u8],
-    version: u32,
+    bytes: &'a [u8],
 ) -> Result<(), Error> {
     if kind == TableKind::AddressIdentifiers {
         // B-ADDR-1
         if !bytes.len().is_multiple_of(32) {
-            let len = u32::try_from(bytes.len()).unwrap_or(u32::MAX);
-            return Err(Error::BadAddressPool(len));
+            return Err(Error::BadAddressPool(
+                u32::try_from(bytes.len()).unwrap_or(u32::MAX),
+            ));
         }
-        module.addresses = bytes
-            .chunks_exact(32)
-            .map(|c| Address(c.try_into().expect("32-byte chunk")))
-            .collect();
+        m.addresses = bytes;
         return Ok(());
     }
     let mut c = Cursor::new(bytes);
     while !c.is_empty() {
         match kind {
-            TableKind::ModuleHandles => module.module_handles.push(module_handle(&mut c)?),
-            TableKind::FriendDecls => module.friends.push(module_handle(&mut c)?),
-            TableKind::DatatypeHandles => module.datatype_handles.push(datatype_handle(&mut c)?),
-            TableKind::FunctionHandles => module.function_handles.push(function_handle(&mut c)?),
-            TableKind::Signatures => module.signatures.push(signature(&mut c)?),
-            TableKind::Identifiers => module.identifiers.push(identifier(&mut c)?),
-            TableKind::ConstantPool => module.constants.push(constant(&mut c)?),
-            TableKind::StructDefs => module.struct_defs.push(struct_def(&mut c)?),
-            TableKind::EnumDefs => module.enum_defs.push(enum_def(&mut c)?),
-            TableKind::FunctionDefs => module.function_defs.push(function_def(&mut c, version)?),
-            // Kept for bounds checking; code-only tables.
-            TableKind::FunctionInst => module.function_instantiations.push(instantiation(&mut c)?),
-            TableKind::StructDefInst => module.struct_instantiations.push(instantiation(&mut c)?),
-            TableKind::EnumDefInst => module.enum_instantiations.push(instantiation(&mut c)?),
-            TableKind::FieldInst => module.field_instantiations.push(instantiation(&mut c)?),
+            TableKind::ModuleHandles => m.module_handles.push(module_handle(&mut c)?),
+            TableKind::FriendDecls => m.friends.push(module_handle(&mut c)?),
+            TableKind::DatatypeHandles => {
+                let h = datatype_handle(&mut c, &mut m.datatype_type_parameters)?;
+                m.datatype_handles.push(h);
+            }
+            TableKind::FunctionHandles => {
+                let h = function_handle(&mut c, &mut m.function_type_parameters)?;
+                m.function_handles.push(h);
+            }
+            TableKind::Signatures => m.signatures.push(signature(&mut c)?),
+            TableKind::Identifiers => m.identifiers.push(identifier(&mut c)?),
+            TableKind::ConstantPool => m.constants.push(constant(&mut c)?),
+            TableKind::StructDefs => {
+                let d = struct_def(&mut c, &mut m.fields)?;
+                m.struct_defs.push(d);
+            }
+            TableKind::EnumDefs => {
+                let d = enum_def(&mut c, &mut m.variants, &mut m.fields)?;
+                m.enum_defs.push(d);
+            }
+            TableKind::FunctionInst => m.function_instantiations.push(instantiation(&mut c)?),
+            TableKind::StructDefInst => m.struct_instantiations.push(instantiation(&mut c)?),
+            TableKind::EnumDefInst => m.enum_instantiations.push(instantiation(&mut c)?),
+            TableKind::FieldInst => m.field_instantiations.push(instantiation(&mut c)?),
             TableKind::FieldHandle => {
                 let owner = c.index("struct definition")?;
                 let field =
                     u16::try_from(c.uleb_max("field offset", FIELD_OFFSET_MAX)?).expect("small");
-                module.field_handles.push((owner, field));
+                m.field_handles.push((owner, field));
             }
-            TableKind::VariantHandles => module.variant_handles.push(variant_handle(&mut c)?),
+            TableKind::VariantHandles => m.variant_handles.push(variant_handle(&mut c)?),
             TableKind::VariantInstHandles => {
-                module
-                    .variant_instantiation_handles
+                m.variant_instantiation_handles
                     .push(variant_handle(&mut c)?);
             }
             // Sui's binary config rejects extraneous bytes, which disallows metadata tables.
             TableKind::Metadata => return Err(Error::BadTableContents(kind)),
-            TableKind::AddressIdentifiers => unreachable!("handled above"),
+            TableKind::AddressIdentifiers | TableKind::FunctionDefs => {
+                unreachable!("handled by the caller")
+            }
         }
     }
     Ok(())
@@ -209,12 +233,9 @@ fn instantiation(c: &mut Cursor<'_>) -> Result<(u16, u16), Error> {
 }
 
 fn variant_handle(c: &mut Cursor<'_>) -> Result<(u16, u16), Error> {
-    let owner = c.uleb_max("variant handle owner", u64::from(u16::MAX))?;
-    let tag = c.uleb_max("variant tag", VARIANT_TAG_MAX_VALUE)?;
-    Ok((
-        u16::try_from(owner).expect("bounded"),
-        u16::try_from(tag).expect("bounded"),
-    ))
+    let owner = c.index("variant handle owner")?;
+    let tag = u16::try_from(c.uleb_max("variant tag", VARIANT_TAG_MAX_VALUE)?).expect("bounded");
+    Ok((owner, tag))
 }
 
 fn module_handle(c: &mut Cursor<'_>) -> Result<ModuleHandle, Error> {
@@ -234,21 +255,25 @@ fn abilities(c: &mut Cursor<'_>) -> Result<AbilitySet, Error> {
     Ok(AbilitySet(value as u8))
 }
 
-fn type_parameter_count(c: &mut Cursor<'_>) -> Result<u64, Error> {
-    c.uleb_max("type parameter count", TYPE_PARAMETER_COUNT_MAX)
+fn arena_range(start: usize, end: usize) -> std::ops::Range<u32> {
+    // Arenas hold at most 65535 × 255 entries, so u32 suffices.
+    u32::try_from(start).expect("arena fits u32")..u32::try_from(end).expect("arena fits u32")
 }
 
 /// B-TP-1
-fn datatype_handle(c: &mut Cursor<'_>) -> Result<DatatypeHandle, Error> {
+fn datatype_handle(
+    c: &mut Cursor<'_>,
+    arena: &mut Vec<DatatypeTypeParameter>,
+) -> Result<DatatypeHandle, Error> {
     let module = c.index("module handle")?;
     let name = c.index("identifier")?;
     let abilities = abilities(c)?;
-    let count = type_parameter_count(c)?;
-    let mut type_parameters = Vec::new();
+    let count = c.uleb_max("type parameter count", TYPE_PARAMETER_COUNT_MAX)?;
+    let start = arena.len();
     for _ in 0..count {
         let constraints = self::abilities(c)?;
         let is_phantom = c.uleb_max("phantom flag", 1)? != 0;
-        type_parameters.push(DatatypeTypeParameter {
+        arena.push(DatatypeTypeParameter {
             constraints,
             is_phantom,
         });
@@ -257,184 +282,103 @@ fn datatype_handle(c: &mut Cursor<'_>) -> Result<DatatypeHandle, Error> {
         module,
         name,
         abilities,
-        type_parameters,
+        type_parameters: arena_range(start, arena.len()),
     })
 }
 
-fn function_handle(c: &mut Cursor<'_>) -> Result<FunctionHandle, Error> {
+fn function_handle(
+    c: &mut Cursor<'_>,
+    arena: &mut Vec<AbilitySet>,
+) -> Result<FunctionHandle, Error> {
     let module = c.index("module handle")?;
     let name = c.index("identifier")?;
     let parameters = c.index("signature")?;
     let return_ = c.index("signature")?;
-    let count = type_parameter_count(c)?;
-    let mut type_parameters = Vec::new();
+    let count = c.uleb_max("type parameter count", TYPE_PARAMETER_COUNT_MAX)?;
+    let start = arena.len();
     for _ in 0..count {
-        type_parameters.push(abilities(c)?);
+        arena.push(abilities(c)?);
     }
     Ok(FunctionHandle {
         module,
         name,
         parameters,
         return_,
-        type_parameters,
+        type_parameters: arena_range(start, arena.len()),
     })
 }
 
 /// B-ID-1: `[a-zA-Z][a-zA-Z0-9_]*` or `_[a-zA-Z0-9_]+`.
-pub(crate) fn is_valid_identifier(s: &str) -> bool {
-    let b = s.as_bytes();
-    let tail_ok = |from: usize| {
-        b[from..]
+pub(crate) fn is_valid_identifier(b: &[u8]) -> bool {
+    let tail_ok = || {
+        b[1..]
             .iter()
             .all(|c| c.is_ascii_alphanumeric() || *c == b'_')
     };
     match b.first() {
-        Some(c) if c.is_ascii_alphabetic() => tail_ok(1),
-        Some(b'_') if b.len() > 1 => tail_ok(1),
+        Some(c) if c.is_ascii_alphabetic() => tail_ok(),
+        Some(b'_') if b.len() > 1 => tail_ok(),
         _ => false,
     }
 }
 
-fn identifier(c: &mut Cursor<'_>) -> Result<String, Error> {
+fn identifier<'a>(c: &mut Cursor<'a>) -> Result<&'a str, Error> {
     let len = usize::try_from(c.uleb_max("identifier size", IDENTIFIER_SIZE_MAX)?).expect("small");
     let bytes = c.take(len, "identifier")?;
-    let s = std::str::from_utf8(bytes)
-        .map_err(|_| Error::BadIdentifier(String::from_utf8_lossy(bytes).into_owned()))?;
-    if !is_valid_identifier(s) {
-        return Err(Error::BadIdentifier(s.to_owned()));
+    // Valid identifiers are ASCII, so validity implies UTF-8.
+    if !is_valid_identifier(bytes) {
+        return Err(Error::BadIdentifier(
+            String::from_utf8_lossy(bytes).into_owned(),
+        ));
     }
-    Ok(s.to_owned())
+    Ok(std::str::from_utf8(bytes).expect("ASCII identifier"))
 }
 
-fn constant(c: &mut Cursor<'_>) -> Result<Constant, Error> {
-    let type_ = signature_token(c)?;
+fn constant<'a>(c: &mut Cursor<'a>) -> Result<Constant<'a>, Error> {
+    let type_ = read_token(c)?;
     let len = usize::try_from(c.uleb_max("constant size", CONSTANT_SIZE_MAX)?).expect("small");
-    let data = c.take(len, "constant")?.to_vec();
-    Ok(Constant { type_, data })
+    Ok(Constant {
+        type_,
+        data: c.take(len, "constant")?,
+    })
 }
 
-fn signature(c: &mut Cursor<'_>) -> Result<Vec<SignatureToken>, Error> {
-    let len = c.uleb_max("signature size", SIGNATURE_SIZE_MAX)?;
-    (0..len).map(|_| signature_token(c)).collect()
+fn signature<'a>(c: &mut Cursor<'a>) -> Result<Signature<'a>, Error> {
+    let len = u8::try_from(c.uleb_max("signature size", SIGNATURE_SIZE_MAX)?).expect("bounded");
+    let start = c.position();
+    for _ in 0..len {
+        read_token(c)?;
+    }
+    Ok(Signature {
+        bytes: c.slice_from(start),
+        len,
+    })
 }
 
-/// B-SIG-1, a port of `load_signature_token`'s explicit-stack algorithm (same depth limit).
-pub(crate) fn signature_token(c: &mut Cursor<'_>) -> Result<SignatureToken, Error> {
-    enum Builder {
-        Saturated(SignatureToken),
-        Vector,
-        Reference,
-        MutableReference,
-        Inst {
-            handle: u16,
-            arity: usize,
-            args: Vec<SignatureToken>,
-        },
-    }
-    impl Builder {
-        fn apply(self, tok: SignatureToken) -> Builder {
-            match self {
-                Builder::Vector => Builder::Saturated(SignatureToken::Vector(Box::new(tok))),
-                Builder::Reference => Builder::Saturated(SignatureToken::Reference(Box::new(tok))),
-                Builder::MutableReference => {
-                    Builder::Saturated(SignatureToken::MutableReference(Box::new(tok)))
-                }
-                Builder::Inst {
-                    handle,
-                    arity,
-                    mut args,
-                } => {
-                    args.push(tok);
-                    if args.len() >= arity {
-                        Builder::Saturated(SignatureToken::DatatypeInstantiation(handle, args))
-                    } else {
-                        Builder::Inst {
-                            handle,
-                            arity,
-                            args,
-                        }
-                    }
-                }
-                Builder::Saturated(_) => unreachable!("saturated tokens are never applied to"),
-            }
-        }
-    }
-    let next = |c: &mut Cursor<'_>| -> Result<Builder, Error> {
-        Ok(match c.u8("signature token")? {
-            0x1 => Builder::Saturated(SignatureToken::Bool),
-            0x2 => Builder::Saturated(SignatureToken::U8),
-            0x3 => Builder::Saturated(SignatureToken::U64),
-            0x4 => Builder::Saturated(SignatureToken::U128),
-            0x5 => Builder::Saturated(SignatureToken::Address),
-            0x6 => Builder::Reference,
-            0x7 => Builder::MutableReference,
-            0x8 => Builder::Saturated(SignatureToken::Datatype(c.index("datatype handle")?)),
-            0x9 => {
-                let idx = c.uleb_max("type parameter index", TYPE_PARAMETER_INDEX_MAX)?;
-                let idx = u16::try_from(idx)
-                    .map_err(|_| Error::BadSignature("type parameter index overflow"))?;
-                Builder::Saturated(SignatureToken::TypeParameter(idx))
-            }
-            0xA => Builder::Vector,
-            0xB => {
-                let handle = c.index("datatype handle")?;
-                let arity = usize::try_from(type_parameter_count(c)?).expect("small");
-                if arity == 0 {
-                    return Err(Error::BadSignature("datatype instantiation with arity 0"));
-                }
-                Builder::Inst {
-                    handle,
-                    arity,
-                    args: Vec::new(),
-                }
-            }
-            0xC => Builder::Saturated(SignatureToken::Signer),
-            0xD => Builder::Saturated(SignatureToken::U16),
-            0xE => Builder::Saturated(SignatureToken::U32),
-            0xF => Builder::Saturated(SignatureToken::U256),
-            _ => return Err(Error::BadSignature("unknown token")),
-        })
-    };
-    let mut stack = match next(c)? {
-        Builder::Saturated(tok) => return Ok(tok),
-        builder => vec![builder],
-    };
-    loop {
-        if stack.len() > SIGNATURE_TOKEN_DEPTH_MAX {
-            return Err(Error::BadSignature("maximum nesting depth reached"));
-        }
-        if let Some(Builder::Saturated(_)) = stack.last() {
-            let Some(Builder::Saturated(tok)) = stack.pop() else {
-                unreachable!()
-            };
-            match stack.pop() {
-                Some(parent) => stack.push(parent.apply(tok)),
-                None => return Ok(tok),
-            }
-        } else {
-            stack.push(next(c)?);
-        }
-    }
-}
-
-fn fields(c: &mut Cursor<'_>) -> Result<Vec<FieldDefinition>, Error> {
+fn fields<'a>(
+    c: &mut Cursor<'a>,
+    arena: &mut Vec<FieldDefinition<'a>>,
+) -> Result<std::ops::Range<u32>, Error> {
     let count = c.uleb_max("field count", FIELD_COUNT_MAX)?;
-    (0..count)
-        .map(|_| {
-            Ok(FieldDefinition {
-                name: c.index("identifier")?,
-                type_: signature_token(c)?,
-            })
-        })
-        .collect()
+    let start = arena.len();
+    for _ in 0..count {
+        arena.push(FieldDefinition {
+            name: c.index("identifier")?,
+            type_: read_token(c)?,
+        });
+    }
+    Ok(arena_range(start, arena.len()))
 }
 
 /// B-DEF-1
-fn struct_def(c: &mut Cursor<'_>) -> Result<StructDefinition, Error> {
+fn struct_def<'a>(
+    c: &mut Cursor<'a>,
+    arena: &mut Vec<FieldDefinition<'a>>,
+) -> Result<StructDefinition, Error> {
     let handle = c.index("datatype handle")?;
     let fields = match c.u8("struct flag")? {
         0x1 => None,
-        0x2 => Some(fields(c)?),
+        0x2 => Some(fields(c, arena)?),
         value => {
             return Err(Error::BadFlag {
                 what: "struct",
@@ -446,7 +390,11 @@ fn struct_def(c: &mut Cursor<'_>) -> Result<StructDefinition, Error> {
 }
 
 /// B-DEF-1
-fn enum_def(c: &mut Cursor<'_>) -> Result<EnumDefinition, Error> {
+fn enum_def<'a>(
+    c: &mut Cursor<'a>,
+    variants: &mut Vec<VariantDefinition>,
+    arena: &mut Vec<FieldDefinition<'a>>,
+) -> Result<EnumDefinition, Error> {
     let handle = c.index("datatype handle")?;
     match c.u8("enum flag")? {
         0x2 => {}
@@ -461,22 +409,27 @@ fn enum_def(c: &mut Cursor<'_>) -> Result<EnumDefinition, Error> {
     if count == 0 {
         return Err(Error::BadSignature("enum with no variants"));
     }
-    let variants = (0..count)
-        .map(|_| {
-            Ok(VariantDefinition {
-                name: c.index("identifier")?,
-                fields: fields(c)?,
-            })
-        })
-        .collect::<Result<_, Error>>()?;
-    Ok(EnumDefinition { handle, variants })
+    let start = variants.len();
+    for _ in 0..count {
+        let name = c.index("identifier")?;
+        let fields = fields(c, arena)?;
+        variants.push(VariantDefinition { name, fields });
+    }
+    Ok(EnumDefinition {
+        handle,
+        variants: arena_range(start, variants.len()),
+    })
 }
 
 const FLAG_NATIVE: u8 = 0b10;
 const FLAG_ENTRY: u8 = 0b100;
 
 /// B-FN-1 (bytecode version ≥ 5 layout).
-fn function_def(c: &mut Cursor<'_>, version: u32) -> Result<FunctionDefinition, Error> {
+fn function_def(
+    c: &mut Cursor<'_>,
+    version: u32,
+    checker: &CodeChecker<'_, '_>,
+) -> Result<FunctionDefinition, Error> {
     let handle = c.index("function handle")?;
     let visibility = match c.u8("visibility")? {
         0x0 => Visibility::Private,
@@ -492,17 +445,15 @@ fn function_def(c: &mut Cursor<'_>, version: u32) -> Result<FunctionDefinition, 
     let mut flags = c.u8("function flags")?;
     let is_entry = flags & FLAG_ENTRY != 0;
     flags &= !FLAG_ENTRY;
-    let acquires = c.uleb_max("acquires count", ACQUIRES_COUNT_MAX)?;
-    if acquires != 0 {
+    if c.uleb_max("acquires count", ACQUIRES_COUNT_MAX)? != 0 {
         return Err(Error::GlobalStorage);
     }
     let is_native = flags & FLAG_NATIVE != 0;
     flags &= !FLAG_NATIVE;
-    let code = if is_native {
-        None
-    } else {
-        Some(code_unit(c, version)?)
-    };
+    checker.function_handle(handle)?;
+    if !is_native {
+        code_unit(c, version, checker, handle)?;
+    }
     if flags != 0 {
         return Err(Error::BadFlag {
             what: "function",
@@ -514,20 +465,25 @@ fn function_def(c: &mut Cursor<'_>, version: u32) -> Result<FunctionDefinition, 
         visibility,
         is_entry,
         is_native,
-        code,
     })
 }
 
-/// B-CODE-1: reads a code unit, keeping only table-indexing operands.
-fn code_unit(c: &mut Cursor<'_>, version: u32) -> Result<CodeUnit, Error> {
+/// B-CODE-1 + B-IDX-1: reads a code unit, bounds-checking every operand, keeping nothing.
+fn code_unit(
+    c: &mut Cursor<'_>,
+    version: u32,
+    checker: &CodeChecker<'_, '_>,
+    handle: u16,
+) -> Result<(), Error> {
     let locals = c.index("locals signature")?;
     let count = c.uleb_max("bytecode count", BYTECODE_COUNT_MAX)?;
-    let code = (0..count)
-        .map(|_| instruction(c, version))
-        .collect::<Result<Vec<_>, _>>()?;
-    let mut jump_tables = Vec::new();
+    let mut code = checker.begin(handle, locals, count)?;
+    for _ in 0..count {
+        instruction(c, version, &mut code)?;
+    }
+    let mut tables = 0;
     if version >= VERSION_7 {
-        let tables = c.uleb_max("jump table count", JUMP_TABLE_INDEX_MAX)?;
+        tables = c.uleb_max("jump table count", JUMP_TABLE_INDEX_MAX)?;
         for _ in 0..tables {
             let head = c.index("enum definition")?;
             let branches = c.uleb_max("jump table branches", VARIANT_COUNT_MAX)?;
@@ -540,26 +496,20 @@ fn code_unit(c: &mut Cursor<'_>, version: u32) -> Result<CodeUnit, Error> {
                     });
                 }
             }
-            let offsets = (0..branches)
-                .map(|_| {
-                    Ok(
-                        u16::try_from(c.uleb_max("bytecode index", BYTECODE_INDEX_MAX)?)
-                            .expect("bounded"),
-                    )
-                })
-                .collect::<Result<_, Error>>()?;
-            jump_tables.push((head, offsets));
+            code.jump_table(head, branches)?;
+            for _ in 0..branches {
+                code.branch(c.uleb_max("bytecode index", BYTECODE_INDEX_MAX)?)?;
+            }
         }
     }
-    Ok(CodeUnit {
-        locals,
-        code,
-        jump_tables,
-    })
+    code.finish(tables)
 }
 
-fn instruction(c: &mut Cursor<'_>, version: u32) -> Result<Operand, Error> {
-    let opcode = c.u8("opcode")?;
+fn instruction(
+    c: &mut Cursor<'_>,
+    version: u32,
+    code: &mut bounds::Code<'_, '_>,
+) -> Result<(), Error> {
     let enums = || {
         if version < VERSION_7 {
             Err(Error::EnumsBeforeV7)
@@ -567,8 +517,7 @@ fn instruction(c: &mut Cursor<'_>, version: u32) -> Result<Operand, Error> {
             Ok(())
         }
     };
-    let u16_of = |v: u64| u16::try_from(v).expect("bounded by uleb_max");
-    Ok(match opcode {
+    match c.u8("opcode")? {
         // No operands.
         0x01
         | 0x02
@@ -579,70 +528,56 @@ fn instruction(c: &mut Cursor<'_>, version: u32) -> Result<Operand, Error> {
         | 0x2F
         | 0x30
         | 0x33..=0x35
-        | 0x4B..=0x4D => Operand::None,
-        0x03..=0x05 => Operand::Branch(u16_of(c.uleb_max("bytecode index", BYTECODE_INDEX_MAX)?)),
+        | 0x4B..=0x4D => {}
+        0x03..=0x05 => code.branch(c.uleb_max("bytecode index", BYTECODE_INDEX_MAX)?)?,
         0x06 => {
             c.take(8, "u64")?;
-            Operand::None
         }
-        0x07 => Operand::Constant(c.index("constant")?),
-        0x0A..=0x0E => {
-            let local = c.uleb_max("local index", LOCAL_INDEX_MAX)?;
-            Operand::Local(u8::try_from(local).expect("bounded"))
-        }
-        0x0F | 0x10 => Operand::FieldHandle(c.index("field handle")?),
-        0x36 | 0x37 => Operand::FieldInstantiation(c.index("field instantiation")?),
-        0x11 => Operand::FunctionHandle(c.index("function handle")?),
-        0x38 => Operand::FunctionInstantiation(c.index("function instantiation")?),
-        0x12 | 0x13 => Operand::StructDefinition(c.index("struct definition")?),
-        0x39 | 0x3A => Operand::StructInstantiation(c.index("struct instantiation")?),
+        0x07 => code.constant(c.index("constant")?)?,
+        0x0A..=0x0E => code.local(c.uleb_max("local index", LOCAL_INDEX_MAX)?)?,
+        0x0F | 0x10 => code.field_handle(c.index("field handle")?)?,
+        0x36 | 0x37 => code.field_instantiation(c.index("field instantiation")?)?,
+        0x11 => code.function_handle(c.index("function handle")?)?,
+        0x38 => code.function_instantiation(c.index("function instantiation")?)?,
+        0x12 | 0x13 => code.struct_definition(c.index("struct definition")?)?,
+        0x39 | 0x3A => code.struct_instantiation(c.index("struct instantiation")?)?,
         0x31 => {
             c.u8("u8")?;
-            Operand::None
         }
         0x32 => {
             c.take(16, "u128")?;
-            Operand::None
         }
         // VEC_PACK / VEC_UNPACK: signature + u64 count.
         0x40 | 0x46 => {
-            let sig = c.index("signature")?;
+            code.vector_signature(c.index("signature")?)?;
             c.take(8, "u64")?;
-            Operand::VectorSignature(sig)
         }
-        0x41..=0x45 | 0x47 => Operand::VectorSignature(c.index("signature")?),
+        0x41..=0x45 | 0x47 => code.vector_signature(c.index("signature")?)?,
         0x48 => {
             c.take(2, "u16")?;
-            Operand::None
         }
         0x49 => {
             c.take(4, "u32")?;
-            Operand::None
         }
         0x4A => {
             c.take(32, "u256")?;
-            Operand::None
         }
         0x4E | 0x50..=0x52 => {
             enums()?;
-            Operand::VariantHandle(u16_of(
-                c.uleb_max("variant handle", VARIANT_HANDLE_INDEX_MAX)?,
-            ))
+            code.variant_handle(c.uleb_max("variant handle", VARIANT_HANDLE_INDEX_MAX)?)?;
         }
         0x4F | 0x53..=0x55 => {
             enums()?;
-            Operand::VariantInstantiation(u16_of(
-                c.uleb_max("variant instantiation handle", VARIANT_HANDLE_INDEX_MAX)?,
-            ))
+            let i = c.uleb_max("variant instantiation handle", VARIANT_HANDLE_INDEX_MAX)?;
+            code.variant_instantiation(i)?;
         }
         0x56 => {
             enums()?;
-            Operand::JumpTable(u16_of(
-                c.uleb_max("jump table index", JUMP_TABLE_INDEX_MAX)?,
-            ))
+            code.jump_table_index(c.uleb_max("jump table index", JUMP_TABLE_INDEX_MAX)?);
         }
         // Deprecated global storage.
         0x29..=0x2D | 0x3B..=0x3F => return Err(Error::GlobalStorage),
         other => return Err(Error::UnknownOpcode(other)),
-    })
+    }
+    Ok(())
 }

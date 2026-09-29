@@ -22,6 +22,7 @@ mod deserialize;
 mod error;
 pub mod model;
 mod package;
+mod sig;
 
 pub use deserialize::deserialize;
 pub use error::{Error, TableKind};

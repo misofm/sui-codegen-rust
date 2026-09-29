@@ -1,10 +1,14 @@
-//! The raw tables of a compiled module that describe its ABI.
+//! The ABI tables of a compiled module, borrowed from the bytecode.
 //!
-//! Mirrors `move-binary-format`'s `CompiledModule` for the tables we keep. Indices are raw `u16`s
-//! into the module's pools; resolve them through [`CompiledModule`]'s accessors, which
-//! bounds-check (B-IDX-1).
+//! Zero-copy: identifiers, constants and every type signature are slices of the input. Types keep
+//! their bytecode encoding (a pre-order serialization, validated once while reading) and are
+//! walked on demand without allocating. Per-item lists (type parameters, fields, variants) live
+//! in shared arenas addressed by ranges. Indices are raw `u16`s; accessors bounds-check (B-IDX-1).
+
+use std::ops::Range;
 
 use crate::error::Error;
+use crate::sig::Tokens;
 
 /// A 32-byte account address.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -13,7 +17,10 @@ pub struct Address(pub [u8; 32]);
 impl Address {
     /// `0x` + 64 lowercase hex digits.
     pub fn to_hex(&self) -> String {
-        format!("0x{}", hex::encode(self.0))
+        let mut out = String::with_capacity(66);
+        out.push_str("0x");
+        out.push_str(&hex::encode(self.0));
+        out
     }
 
     /// Parses `0x`-prefixed or bare hex, 1–64 digits.
@@ -22,8 +29,7 @@ impl Address {
         if s.is_empty() || s.len() > 64 {
             return None;
         }
-        let padded = format!("{s:0>64}");
-        let bytes = hex::decode(padded).ok()?;
+        let bytes = hex::decode(format!("{s:0>64}")).ok()?;
         Some(Address(bytes.try_into().ok()?))
     }
 }
@@ -54,7 +60,7 @@ impl AbilitySet {
     }
 
     /// Ability names in declaration order (`copy`, `drop`, `store`, `key`).
-    pub fn names(self) -> Vec<&'static str> {
+    pub fn names(self) -> impl Iterator<Item = &'static str> {
         [
             (Self::COPY, "copy"),
             (Self::DROP, "drop"),
@@ -62,9 +68,8 @@ impl AbilitySet {
             (Self::KEY, "key"),
         ]
         .into_iter()
-        .filter(|(bit, _)| self.has(*bit))
+        .filter(move |(bit, _)| self.has(*bit))
         .map(|(_, name)| name)
-        .collect()
     }
 }
 
@@ -106,8 +111,15 @@ pub struct DatatypeHandle {
     pub name: u16,
     /// Declared abilities.
     pub abilities: AbilitySet,
-    /// Type parameters.
-    pub type_parameters: Vec<DatatypeTypeParameter>,
+    /// Range into [`CompiledModule::datatype_type_parameters`].
+    pub type_parameters: Range<u32>,
+}
+
+impl DatatypeHandle {
+    /// Number of type parameters.
+    pub fn arity(&self) -> usize {
+        (self.type_parameters.end - self.type_parameters.start) as usize
+    }
 }
 
 /// A function handle.
@@ -121,61 +133,61 @@ pub struct FunctionHandle {
     pub parameters: u16,
     /// Return signature index.
     pub return_: u16,
-    /// Type parameter constraints.
-    pub type_parameters: Vec<AbilitySet>,
+    /// Range into [`CompiledModule::function_type_parameters`].
+    pub type_parameters: Range<u32>,
 }
 
-/// A signature token (B-SIG-1).
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub enum SignatureToken {
-    /// `bool`
-    Bool,
-    /// `u8`
-    U8,
-    /// `u16`
-    U16,
-    /// `u32`
-    U32,
-    /// `u64`
-    U64,
-    /// `u128`
-    U128,
-    /// `u256`
-    U256,
-    /// `address`
-    Address,
-    /// `signer`
-    Signer,
-    /// `vector<T>`
-    Vector(Box<SignatureToken>),
-    /// `&T`
-    Reference(Box<SignatureToken>),
-    /// `&mut T`
-    MutableReference(Box<SignatureToken>),
-    /// A datatype with no type arguments (datatype handle index).
-    Datatype(u16),
-    /// A datatype instantiation (datatype handle index, type arguments).
-    DatatypeInstantiation(u16, Vec<SignatureToken>),
-    /// A type parameter (index).
-    TypeParameter(u16),
+impl FunctionHandle {
+    /// Number of type parameters.
+    pub fn arity(&self) -> usize {
+        (self.type_parameters.end - self.type_parameters.start) as usize
+    }
+}
+
+/// One signature-token tree in its bytecode encoding (validated, B-SIG-1).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Token<'a>(pub(crate) &'a [u8]);
+
+/// A signature: a sequence of tokens in bytecode encoding.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Signature<'a> {
+    pub(crate) bytes: &'a [u8],
+    pub(crate) len: u8,
+}
+
+impl<'a> Signature<'a> {
+    /// Number of tokens.
+    pub fn len(&self) -> usize {
+        usize::from(self.len)
+    }
+
+    /// Whether the signature is empty.
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
+    /// The tokens, in order.
+    pub fn tokens(&self) -> Tokens<'a> {
+        Tokens::new(self.bytes, self.len())
+    }
 }
 
 /// A constant pool entry.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Constant {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Constant<'a> {
     /// Constant type.
-    pub type_: SignatureToken,
+    pub type_: Token<'a>,
     /// BCS-encoded value.
-    pub data: Vec<u8>,
+    pub data: &'a [u8],
 }
 
-/// A field definition (name index, type).
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct FieldDefinition {
+/// A field definition.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct FieldDefinition<'a> {
     /// Name identifier.
     pub name: u16,
     /// Field type.
-    pub type_: SignatureToken,
+    pub type_: Token<'a>,
 }
 
 /// A struct definition (B-DEF-1).
@@ -183,8 +195,8 @@ pub struct FieldDefinition {
 pub struct StructDefinition {
     /// Datatype handle.
     pub handle: u16,
-    /// Fields; `None` for native structs.
-    pub fields: Option<Vec<FieldDefinition>>,
+    /// Range into [`CompiledModule::fields`]; `None` for native structs.
+    pub fields: Option<Range<u32>>,
 }
 
 /// An enum variant.
@@ -192,8 +204,8 @@ pub struct StructDefinition {
 pub struct VariantDefinition {
     /// Name identifier.
     pub name: u16,
-    /// Fields.
-    pub fields: Vec<FieldDefinition>,
+    /// Range into [`CompiledModule::fields`].
+    pub fields: Range<u32>,
 }
 
 /// An enum definition (B-DEF-1).
@@ -201,12 +213,19 @@ pub struct VariantDefinition {
 pub struct EnumDefinition {
     /// Datatype handle.
     pub handle: u16,
-    /// Variants in declaration (tag) order.
-    pub variants: Vec<VariantDefinition>,
+    /// Range into [`CompiledModule::variants`], in tag order.
+    pub variants: Range<u32>,
 }
 
-/// A function definition (B-FN-1).
-#[derive(Clone, Debug, PartialEq, Eq)]
+impl EnumDefinition {
+    /// Number of variants.
+    pub fn variant_count(&self) -> usize {
+        (self.variants.end - self.variants.start) as usize
+    }
+}
+
+/// A function definition (B-FN-1). Code is bounds-checked while reading and not kept.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct FunctionDefinition {
     /// Function handle.
     pub handle: u16,
@@ -216,61 +235,14 @@ pub struct FunctionDefinition {
     pub is_entry: bool,
     /// `native` (no code).
     pub is_native: bool,
-    /// The code unit's index operands (kept only for bounds checking); `None` if native.
-    pub code: Option<CodeUnit>,
 }
 
-/// The operands of a code unit that index into module tables (B-CODE-1). Instruction semantics
-/// are not modelled; only what the bounds checker needs.
-#[derive(Clone, Debug, Default, PartialEq, Eq)]
-pub struct CodeUnit {
-    /// Locals signature index.
-    pub locals: u16,
-    /// One entry per instruction.
-    pub code: Vec<Operand>,
-    /// Variant jump tables: `(head enum definition, branch offsets)`.
-    pub jump_tables: Vec<(u16, Vec<u16>)>,
-}
-
-/// An instruction's table-indexing operand.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Operand {
-    /// No indexing operand.
-    None,
-    /// Branch target (code offset).
-    Branch(u16),
-    /// Constant pool index.
-    Constant(u16),
-    /// Local index.
-    Local(u8),
-    /// Field handle index.
-    FieldHandle(u16),
-    /// Field instantiation index.
-    FieldInstantiation(u16),
-    /// Function handle index.
-    FunctionHandle(u16),
-    /// Function instantiation index.
-    FunctionInstantiation(u16),
-    /// Struct definition index.
-    StructDefinition(u16),
-    /// Struct instantiation index.
-    StructInstantiation(u16),
-    /// Vector instruction element signature index.
-    VectorSignature(u16),
-    /// Variant handle index.
-    VariantHandle(u16),
-    /// Variant instantiation handle index.
-    VariantInstantiation(u16),
-    /// Jump table index.
-    JumpTable(u16),
-}
-
-/// Instantiation-style tables: `(definition or handle, type-argument signature)`.
+/// `(definition or handle, signature)` pairs of the instantiation tables.
 pub type Instantiation = (u16, u16);
 
-/// The ABI-relevant tables of a compiled module.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct CompiledModule {
+/// The ABI-relevant tables of a compiled module, borrowing from its bytecode.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct CompiledModule<'a> {
     /// Bytecode version (6 or 7).
     pub version: u32,
     /// The module's own handle.
@@ -279,21 +251,29 @@ pub struct CompiledModule {
     pub module_handles: Vec<ModuleHandle>,
     /// Datatype handles.
     pub datatype_handles: Vec<DatatypeHandle>,
+    /// Arena of datatype type parameters.
+    pub datatype_type_parameters: Vec<DatatypeTypeParameter>,
     /// Function handles.
     pub function_handles: Vec<FunctionHandle>,
+    /// Arena of function type-parameter constraints.
+    pub function_type_parameters: Vec<AbilitySet>,
     /// Signature pool.
-    pub signatures: Vec<Vec<SignatureToken>>,
+    pub signatures: Vec<Signature<'a>>,
     /// Identifier pool.
-    pub identifiers: Vec<String>,
-    /// Address pool.
-    pub addresses: Vec<Address>,
+    pub identifiers: Vec<&'a str>,
+    /// Address pool (raw 32-byte entries).
+    pub addresses: &'a [u8],
     /// Constant pool.
-    pub constants: Vec<Constant>,
-    /// Struct definitions, in definition order.
+    pub constants: Vec<Constant<'a>>,
+    /// Struct definitions, definition order.
     pub struct_defs: Vec<StructDefinition>,
-    /// Enum definitions, in definition order.
+    /// Enum definitions, definition order.
     pub enum_defs: Vec<EnumDefinition>,
-    /// Function definitions, in definition order.
+    /// Arena of enum variants.
+    pub variants: Vec<VariantDefinition>,
+    /// Arena of struct and variant fields.
+    pub fields: Vec<FieldDefinition<'a>>,
+    /// Function definitions, definition order.
     pub function_defs: Vec<FunctionDefinition>,
     /// Friend modules.
     pub friends: Vec<ModuleHandle>,
@@ -313,7 +293,7 @@ pub struct CompiledModule {
     pub variant_instantiation_handles: Vec<(u16, u16)>,
 }
 
-fn get<'a, T>(pool: &'a [T], index: u16, what: &'static str) -> Result<&'a T, Error> {
+fn get<'s, T>(pool: &'s [T], index: u16, what: &'static str) -> Result<&'s T, Error> {
     pool.get(usize::from(index)).ok_or(Error::OutOfBounds {
         what,
         index: usize::from(index),
@@ -321,15 +301,36 @@ fn get<'a, T>(pool: &'a [T], index: u16, what: &'static str) -> Result<&'a T, Er
     })
 }
 
-impl CompiledModule {
+fn range<'s, T>(arena: &'s [T], r: &Range<u32>) -> &'s [T] {
+    &arena[r.start as usize..r.end as usize]
+}
+
+impl<'a> CompiledModule<'a> {
+    /// Number of addresses in the pool.
+    pub fn address_count(&self) -> usize {
+        self.addresses.len() / 32
+    }
+
     /// Identifier by index (B-IDX-1).
-    pub fn identifier(&self, index: u16) -> Result<&str, Error> {
-        get(&self.identifiers, index, "identifier").map(String::as_str)
+    pub fn identifier(&self, index: u16) -> Result<&'a str, Error> {
+        get(&self.identifiers, index, "identifier").copied()
     }
 
     /// Address by index.
     pub fn address(&self, index: u16) -> Result<Address, Error> {
-        get(&self.addresses, index, "address").copied()
+        let i = usize::from(index);
+        if i >= self.address_count() {
+            return Err(Error::OutOfBounds {
+                what: "address",
+                index: i,
+                len: self.address_count(),
+            });
+        }
+        Ok(Address(
+            self.addresses[i * 32..i * 32 + 32]
+                .try_into()
+                .expect("32 bytes"),
+        ))
     }
 
     /// Module handle by index.
@@ -348,17 +349,42 @@ impl CompiledModule {
     }
 
     /// Signature by index.
-    pub fn signature(&self, index: u16) -> Result<&[SignatureToken], Error> {
-        get(&self.signatures, index, "signature").map(Vec::as_slice)
+    pub fn signature(&self, index: u16) -> Result<Signature<'a>, Error> {
+        get(&self.signatures, index, "signature").copied()
+    }
+
+    /// A datatype handle's type parameters.
+    pub fn datatype_type_params(&self, handle: &DatatypeHandle) -> &[DatatypeTypeParameter] {
+        range(&self.datatype_type_parameters, &handle.type_parameters)
+    }
+
+    /// A function handle's type-parameter constraints.
+    pub fn function_type_params(&self, handle: &FunctionHandle) -> &[AbilitySet] {
+        range(&self.function_type_parameters, &handle.type_parameters)
+    }
+
+    /// A struct's fields (`None` if native).
+    pub fn struct_fields(&self, def: &StructDefinition) -> Option<&[FieldDefinition<'a>]> {
+        def.fields.as_ref().map(|r| range(&self.fields, r))
+    }
+
+    /// An enum's variants, in tag order.
+    pub fn enum_variants(&self, def: &EnumDefinition) -> &[VariantDefinition] {
+        range(&self.variants, &def.variants)
+    }
+
+    /// A variant's fields.
+    pub fn variant_fields(&self, variant: &VariantDefinition) -> &[FieldDefinition<'a>] {
+        range(&self.fields, &variant.fields)
     }
 
     /// `(address, name)` of a module handle.
-    pub fn module_id(&self, handle: &ModuleHandle) -> Result<(Address, &str), Error> {
+    pub fn module_id(&self, handle: &ModuleHandle) -> Result<(Address, &'a str), Error> {
         Ok((self.address(handle.address)?, self.identifier(handle.name)?))
     }
 
     /// This module's `(address, name)`.
-    pub fn self_id(&self) -> Result<(Address, &str), Error> {
+    pub fn self_id(&self) -> Result<(Address, &'a str), Error> {
         self.module_id(self.module_handle(self.self_handle)?)
     }
 }

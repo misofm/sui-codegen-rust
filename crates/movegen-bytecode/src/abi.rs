@@ -6,7 +6,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::error::Error;
-use crate::model::{AbilitySet, CompiledModule, SignatureToken, Visibility};
+use crate::model::{AbilitySet, CompiledModule, FieldDefinition, Token, Visibility};
+use crate::sig::{Node, NodeReader};
 
 /// A Move type as it appears in a signature.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
@@ -178,27 +179,34 @@ pub struct Module {
 }
 
 fn abilities(set: AbilitySet) -> Vec<String> {
-    set.names().into_iter().map(str::to_owned).collect()
+    set.names().map(str::to_owned).collect()
 }
 
 impl Module {
-    /// Resolves a compiled module (B-IDX-1).
-    pub fn from_compiled(m: &CompiledModule) -> Result<Self, Error> {
+    /// Resolves a compiled module (B-IDX-1, B-ABI-1..3).
+    pub fn from_compiled(m: &CompiledModule<'_>) -> Result<Self, Error> {
         let (address, name) = m.self_id()?;
-        let ty = |t: &SignatureToken, arity: usize| resolve_type(m, t, arity);
-        let fields =
-            |fs: &[crate::model::FieldDefinition], arity: usize| -> Result<Vec<Field>, Error> {
-                fs.iter()
-                    .map(|f| {
-                        Ok(Field {
-                            name: m.identifier(f.name)?.to_owned(),
-                            type_: ty(&f.type_, arity)?,
-                        })
+        // Each pool address is hex-encoded once, not once per type reference.
+        let hex: Vec<String> = m
+            .addresses
+            .chunks_exact(32)
+            .map(|a| {
+                let mut s = String::with_capacity(66);
+                s.push_str("0x");
+                s.push_str(&hex::encode(a));
+                s
+            })
+            .collect();
+        let cx = Cx { m, hex: &hex };
+        let fields = |fs: &[FieldDefinition<'_>], arity: usize| -> Result<Vec<Field>, Error> {
+            fs.iter()
+                .map(|f| {
+                    Ok(Field {
+                        name: m.identifier(f.name)?.to_owned(),
+                        type_: resolve(&cx, f.type_, arity)?,
                     })
-                    .collect()
-            };
-        let arity_of = |handle: u16| -> Result<usize, Error> {
-            Ok(m.datatype_handle(handle)?.type_parameters.len())
+                })
+                .collect()
         };
         let datatype = |handle: u16, kind: DatatypeKind| -> Result<Datatype, Error> {
             let h = m.datatype_handle(handle)?;
@@ -211,8 +219,8 @@ impl Module {
             Ok(Datatype {
                 name: m.identifier(h.name)?.to_owned(),
                 abilities: abilities(h.abilities),
-                type_parameters: h
-                    .type_parameters
+                type_parameters: m
+                    .datatype_type_params(h)
                     .iter()
                     .map(|p| TypeParameter {
                         constraints: abilities(p.constraints),
@@ -222,24 +230,26 @@ impl Module {
                 kind,
             })
         };
+        let arity_of =
+            |handle: u16| -> Result<usize, Error> { Ok(m.datatype_handle(handle)?.arity()) };
 
-        let mut datatypes = Vec::new();
+        let mut datatypes = Vec::with_capacity(m.struct_defs.len() + m.enum_defs.len());
         for def in &m.struct_defs {
-            let kind = match &def.fields {
+            let kind = match m.struct_fields(def) {
                 Some(fs) => DatatypeKind::Struct(fields(fs, arity_of(def.handle)?)?),
                 None => DatatypeKind::NativeStruct,
             };
             datatypes.push(datatype(def.handle, kind)?);
         }
         for def in &m.enum_defs {
-            let variants = def
-                .variants
+            let arity = arity_of(def.handle)?;
+            let variants = m
+                .enum_variants(def)
                 .iter()
                 .map(|v| {
-                    let arity = arity_of(def.handle)?;
                     Ok(Variant {
                         name: m.identifier(v.name)?.to_owned(),
-                        fields: fields(&v.fields, arity)?,
+                        fields: fields(m.variant_fields(v), arity)?,
                     })
                 })
                 .collect::<Result<_, Error>>()?;
@@ -257,7 +267,13 @@ impl Module {
                         name: m.identifier(h.name)?.to_owned(),
                     });
                 }
-                let arity = h.type_parameters.len();
+                let arity = h.arity();
+                let types = |sig: u16| -> Result<Vec<Type>, Error> {
+                    m.signature(sig)?
+                        .tokens()
+                        .map(|t| resolve(&cx, t, arity))
+                        .collect()
+                };
                 Ok(Function {
                     name: m.identifier(h.name)?.to_owned(),
                     visibility: match def.visibility {
@@ -267,17 +283,13 @@ impl Module {
                     },
                     entry: def.is_entry,
                     native: def.is_native,
-                    type_parameters: h.type_parameters.iter().map(|a| abilities(*a)).collect(),
-                    parameters: m
-                        .signature(h.parameters)?
+                    type_parameters: m
+                        .function_type_params(h)
                         .iter()
-                        .map(|t| ty(t, arity))
-                        .collect::<Result<_, _>>()?,
-                    returns: m
-                        .signature(h.return_)?
-                        .iter()
-                        .map(|t| ty(t, arity))
-                        .collect::<Result<_, _>>()?,
+                        .map(|a| abilities(*a))
+                        .collect(),
+                    parameters: types(h.parameters)?,
+                    returns: types(h.return_)?,
                 })
             })
             .collect::<Result<_, Error>>()?;
@@ -299,8 +311,8 @@ impl Module {
             .iter()
             .map(|c| {
                 Ok(Constant {
-                    type_: ty(&c.type_, 0)?,
-                    data: hex::encode(&c.data),
+                    type_: resolve(&cx, c.type_, 0)?,
+                    data: hex::encode(c.data),
                 })
             })
             .collect::<Result<_, Error>>()?;
@@ -343,67 +355,72 @@ impl Module {
     }
 }
 
-/// B-ABI-1: definition names are unique.
+/// B-ABI-1: names are unique. Lists are small, so a sort beats hashing.
 fn unique<'a>(what: &'static str, names: impl Iterator<Item = &'a str>) -> Result<(), Error> {
-    let mut seen = std::collections::HashSet::new();
-    for name in names {
-        if !seen.insert(name) {
-            return Err(Error::Duplicate {
-                what,
-                name: name.to_owned(),
-            });
-        }
+    let mut names: Vec<&str> = names.collect();
+    names.sort_unstable();
+    match names.windows(2).find(|w| w[0] == w[1]) {
+        Some(w) => Err(Error::Duplicate {
+            what,
+            name: w[0].to_owned(),
+        }),
+        None => Ok(()),
     }
-    Ok(())
 }
 
-/// Resolves a signature token in a context with `arity` type parameters (B-ABI-3).
-fn resolve_type(m: &CompiledModule, t: &SignatureToken, arity: usize) -> Result<Type, Error> {
-    let datatype = |handle: u16, args: &[SignatureToken]| -> Result<Type, Error> {
-        let h = m.datatype_handle(handle)?;
-        if args.len() != h.type_parameters.len() {
-            return Err(Error::IllFormedType(format!(
-                "{} expects {} type arguments, got {}",
-                m.identifier(h.name)?,
-                h.type_parameters.len(),
-                args.len()
-            )));
-        }
-        let (address, module) = m.module_id(m.module_handle(h.module)?)?;
-        Ok(Type::Datatype(Box::new(DatatypeRef {
-            address: address.to_hex(),
-            module: module.to_owned(),
-            name: m.identifier(h.name)?.to_owned(),
-            type_arguments: args
-                .iter()
-                .map(|a| resolve_type(m, a, arity))
-                .collect::<Result<_, _>>()?,
-        })))
-    };
-    Ok(match t {
-        SignatureToken::Bool => Type::Bool,
-        SignatureToken::U8 => Type::U8,
-        SignatureToken::U16 => Type::U16,
-        SignatureToken::U32 => Type::U32,
-        SignatureToken::U64 => Type::U64,
-        SignatureToken::U128 => Type::U128,
-        SignatureToken::U256 => Type::U256,
-        SignatureToken::Address => Type::Address,
-        SignatureToken::Signer => Type::Signer,
-        SignatureToken::Vector(inner) => Type::Vector(Box::new(resolve_type(m, inner, arity)?)),
-        SignatureToken::Reference(inner) => {
-            Type::Reference(Box::new(resolve_type(m, inner, arity)?))
-        }
-        SignatureToken::MutableReference(inner) => {
-            Type::MutableReference(Box::new(resolve_type(m, inner, arity)?))
-        }
-        SignatureToken::Datatype(h) => datatype(*h, &[])?,
-        SignatureToken::DatatypeInstantiation(h, args) => datatype(*h, args)?,
-        SignatureToken::TypeParameter(i) if usize::from(*i) < arity => Type::TypeParameter(*i),
-        SignatureToken::TypeParameter(i) => {
-            return Err(Error::IllFormedType(format!(
-                "type parameter {i} out of range (arity {arity})"
-            )));
-        }
-    })
+struct Cx<'k, 'a> {
+    m: &'k CompiledModule<'a>,
+    hex: &'k [String],
+}
+
+/// Decodes a token in a context with `arity` type parameters (B-ABI-3).
+fn resolve(cx: &Cx<'_, '_>, token: Token<'_>, arity: usize) -> Result<Type, Error> {
+    fn go(cx: &Cx<'_, '_>, r: &mut NodeReader<'_>, arity: usize) -> Result<Type, Error> {
+        let m = cx.m;
+        let datatype = |handle: u16, args: Vec<Type>| -> Result<Type, Error> {
+            let h = m.datatype_handle(handle)?;
+            let mh = m.module_handle(h.module)?;
+            let address = cx
+                .hex
+                .get(usize::from(mh.address))
+                .ok_or(Error::OutOfBounds {
+                    what: "address",
+                    index: usize::from(mh.address),
+                    len: cx.hex.len(),
+                })?;
+            let module = m.identifier(mh.name)?;
+            Ok(Type::Datatype(Box::new(DatatypeRef {
+                address: address.clone(),
+                module: module.to_owned(),
+                name: m.identifier(h.name)?.to_owned(),
+                type_arguments: args,
+            })))
+        };
+        Ok(match r.next()? {
+            Node::Bool => Type::Bool,
+            Node::U8 => Type::U8,
+            Node::U16 => Type::U16,
+            Node::U32 => Type::U32,
+            Node::U64 => Type::U64,
+            Node::U128 => Type::U128,
+            Node::U256 => Type::U256,
+            Node::Address => Type::Address,
+            Node::Signer => Type::Signer,
+            Node::Vector => Type::Vector(Box::new(go(cx, r, arity)?)),
+            Node::Reference => Type::Reference(Box::new(go(cx, r, arity)?)),
+            Node::MutableReference => Type::MutableReference(Box::new(go(cx, r, arity)?)),
+            Node::Datatype(h) => datatype(h, Vec::new())?,
+            Node::Instantiation(h, n) => {
+                let args = (0..n).map(|_| go(cx, r, arity)).collect::<Result<_, _>>()?;
+                datatype(h, args)?
+            }
+            Node::TypeParameter(i) if usize::from(i) < arity => Type::TypeParameter(i),
+            Node::TypeParameter(i) => {
+                return Err(Error::IllFormedType(format!(
+                    "type parameter {i} out of range (arity {arity})"
+                )));
+            }
+        })
+    }
+    go(cx, &mut NodeReader::new(token), arity)
 }

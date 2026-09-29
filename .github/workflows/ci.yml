@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --locked --workspace --all-targets -- -D warnings
+      - run: cargo test --locked --workspace
+      - name: wasm32 (runtime-facing crates must stay wasm-clean)
+        run: cargo build --locked --target wasm32-unknown-unknown -p movegen-bytecode
+
+  oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: oracle
+      - run: scripts/fetch-sui-src.sh
+      - name: differential tests vs Mysten's move-binary-format (pinned tag)
+        run: cargo test --release
+        working-directory: oracle
+      - name: dense corruption sweep
+        run: cargo test --release -- --ignored
+        working-directory: oracle

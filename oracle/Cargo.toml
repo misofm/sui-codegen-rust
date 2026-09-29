@@ -1,0 +1,14 @@
+# Differential tests against Mysten's Move implementation at the pinned Sui tag.
+# Not part of the main workspace: run `scripts/fetch-sui-src.sh` first, then `cargo test` here.
+[package]
+name = "oracle"
+edition = "2024"
+publish = false
+
+[dependencies]
+movegen-bytecode = { path = "../crates/movegen-bytecode" }
+move-binary-format = { path = "../.tools/sui-src/external-crates/move/crates/move-binary-format" }
+move-core-types = { path = "../.tools/sui-src/external-crates/move/crates/move-core-types" }
+hex = "0.4"
+
+[workspace]

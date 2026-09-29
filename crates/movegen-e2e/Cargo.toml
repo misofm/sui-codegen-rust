@@ -1,0 +1,21 @@
+[package]
+name = "movegen-e2e"
+description = "Bindings generated from the fixture corpus, compiled and exercised end to end"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+movegen-runtime.workspace = true
+
+[dev-dependencies]
+bcs.workspace = true
+sui-sdk-types.workspace = true
+sui-transaction-builder.workspace = true
+trybuild = "1.0"
+
+[lints]
+workspace = true

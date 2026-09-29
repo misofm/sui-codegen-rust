@@ -1,4 +1,4 @@
-//! `movegen`: refresh a lock of Sui Move package ABIs, and (soon) generate Rust bindings.
+//! `movegen`: refresh a lock of Sui Move package ABIs, and generate Rust bindings from it.
 
 use std::path::PathBuf;
 use std::process::ExitCode;
@@ -25,6 +25,12 @@ struct Cli {
 enum Command {
     /// Fetch every configured package (and its dependency closure) into the lock.
     Refresh,
+    /// Generate Rust bindings from the lock (offline).
+    Generate {
+        /// Fail if the generated files are not up to date instead of writing them.
+        #[arg(long)]
+        check: bool,
+    },
 }
 
 /// Sui GraphQL, batched: one `multiGetPackages` per dependency level (≤ 200 keys per request).
@@ -161,6 +167,44 @@ fn run(cli: &Cli) -> Result<(), Error> {
                 "{} files changed in {} ({:.2?})",
                 changed.len(),
                 lock_dir.display(),
+                start.elapsed()
+            );
+            Ok(())
+        }
+        Command::Generate { check } => {
+            let start = Instant::now();
+            let lock = movegen::Lock::read(&dir.join(&config.lock))?;
+            let generated = movegen::generate(&config, &lock)?;
+            let out = dir.join(
+                config
+                    .generate
+                    .output
+                    .clone()
+                    .unwrap_or_else(|| PathBuf::from("src/generated")),
+            );
+            let changes = generated.sync(&out, check)?;
+            let lines: usize = generated.files.iter().map(|(_, c)| c.lines().count()).sum();
+            if check && !changes.is_empty() {
+                for change in &changes {
+                    match change {
+                        movegen::Change::Write(rel) => {
+                            eprintln!("stale: {}", out.join(rel).display());
+                        }
+                        movegen::Change::Remove(rel) => {
+                            eprintln!("orphaned: {}", out.join(rel).display());
+                        }
+                    }
+                }
+                return Err(Error::Generate(format!(
+                    "{} generated files are out of date; run `movegen generate`",
+                    changes.len()
+                )));
+            }
+            eprintln!(
+                "{} files ({lines} lines), {} changed, in {} ({:.2?})",
+                generated.files.len(),
+                if check { 0 } else { changes.len() },
+                out.display(),
                 start.elapsed()
             );
             Ok(())

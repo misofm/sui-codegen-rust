@@ -1,0 +1,56 @@
+error[E0277]: `u64` cannot be passed for a Move parameter of type `Listing`
+ --> tests/ui/pure_for_object.rs:7:56
+  |
+7 |     let _ = record_shop::listing::price(tx, d, vec![], 5u64);
+  |             ---------------------------                ^^^^ not a `Listing`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<Listing>` is not implemented for `u64`
+  = note: pass an `Arg<Listing>` (a previous result), an `ObjectRef` if `Listing` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+  = help: the following other types implement trait `IntoInput<T>`:
+            `&T` implements `IntoInput<T>`
+            `ObjectRef` implements `IntoInput<T>`
+            `ObjectRef` implements `IntoInput<movegen_runtime::Any>`
+            `ReceivingRef` implements `IntoInput<Receive<T>>`
+            `ReceivingRef` implements `IntoInput<movegen_runtime::Receiving>`
+            `movegen_runtime::Arg<T>` implements `IntoInput<T>`
+            `movegen_runtime::Arg<T>` implements `IntoInput<movegen_runtime::Any>`
+note: required by a bound in `price`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn price(
+  |        ----- required by a bound in this function
+...
+  |     arg0: impl __rt::IntoInput<Listing>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `price`
+
+error[E0277]: `u64` is not a Move object type (it lacks `key`), so an `ObjectRef` cannot be passed for it
+ --> tests/ui/pure_for_object.rs:8:48
+  |
+8 |     let _ = record_shop::listing::fixed(tx, d, o);
+  |             ---------------------------        ^ an `ObjectRef` was passed here
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `Key` is not implemented for `u64`
+  = note: `Receiving<_>` parameters take a `ReceivingRef`; other values must be previous results (`Arg<_>`)
+  = help: the following other types implement trait `Key`:
+            AccumulatorRoot
+            AddressAliasState
+            AddressAliases
+            Allowance
+            AllowanceCap
+            Clock
+            Coin
+            CoinMetadata
+          and $N others
+  = note: required for `ObjectRef` to implement `IntoInput<u64>`
+note: required by a bound in `fixed`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn fixed(
+  |        ----- required by a bound in this function
+...
+  |     arg0: impl __rt::IntoInput<u64>,
+  |                ^^^^^^^^^^^^^^^^^^^^ required by this bound in `fixed`

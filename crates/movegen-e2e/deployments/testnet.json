@@ -1,0 +1,1911 @@
+{
+  "lock_version": 1,
+  "network": "testnet",
+  "chain_identifier": "69WiPg3DAQiwdxfncX6wYQ2siKwAe6L9BZthQea3JNMD",
+  "checkpoint": 389071331,
+  "system_objects": {
+    "accumulator_root": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000000acc",
+      "initial_shared_version": 641707471
+    },
+    "address_alias_state": {
+      "id": "0x000000000000000000000000000000000000000000000000000000000000000a",
+      "initial_shared_version": 738267224
+    },
+    "clock": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000000006",
+      "initial_shared_version": 1
+    },
+    "coin_registry": {
+      "id": "0x000000000000000000000000000000000000000000000000000000000000000c",
+      "initial_shared_version": 590192911
+    },
+    "deny_list": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000000403",
+      "initial_shared_version": 22257037
+    },
+    "display_registry": {
+      "id": "0x000000000000000000000000000000000000000000000000000000000000000d",
+      "initial_shared_version": 800630232
+    },
+    "random": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000000008",
+      "initial_shared_version": 43342337
+    },
+    "sui_system_state": {
+      "id": "0x0000000000000000000000000000000000000000000000000000000000000005",
+      "initial_shared_version": 1
+    }
+  },
+  "packages": {
+    "audio": {
+      "original_id": "0x7b143c3408e5fc8964e7ee696c9d4b63b6d0464347797e32bfa43275f09a3b08",
+      "published_at": "0x7b143c3408e5fc8964e7ee696c9d4b63b6d0464347797e32bfa43275f09a3b08",
+      "version": 1,
+      "type_origins": {
+        "audio::Audio": "0x7b143c3408e5fc8964e7ee696c9d4b63b6d0464347797e32bfa43275f09a3b08"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "composition_credits": {
+      "original_id": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+      "published_at": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+      "version": 1,
+      "type_origins": {
+        "composition_credits::CompositionCreditAddedEvent": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+        "composition_credits::CompositionCreditRemovedEvent": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+        "composition_credits::CompositionCredits": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+        "composition_credits::ExtensionKey": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe",
+        "composition_party_role::CompositionPartyRole": "0xac64c8a52fd7adb31e89eeda184ba8313c8c4dc43d1a98c64717565273c828fe"
+      },
+      "linkage": {
+        "credit": {
+          "upgraded_id": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "composition_lyrics": {
+      "original_id": "0x9d4bd69f62c9744ec5ef9bba8a57a003b0ae79b4b00ab7e941b9ecb2ee5e6274",
+      "published_at": "0x9d4bd69f62c9744ec5ef9bba8a57a003b0ae79b4b00ab7e941b9ecb2ee5e6274",
+      "version": 1,
+      "type_origins": {
+        "composition_lyrics::CompositionLyricsClearedEvent": "0x9d4bd69f62c9744ec5ef9bba8a57a003b0ae79b4b00ab7e941b9ecb2ee5e6274",
+        "composition_lyrics::CompositionLyricsSetEvent": "0x9d4bd69f62c9744ec5ef9bba8a57a003b0ae79b4b00ab7e941b9ecb2ee5e6274",
+        "composition_lyrics::ExtensionKey": "0x9d4bd69f62c9744ec5ef9bba8a57a003b0ae79b4b00ab7e941b9ecb2ee5e6274"
+      },
+      "linkage": {
+        "language_code": {
+          "upgraded_id": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "composition_routed_stake_action": {
+      "original_id": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+      "published_at": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+      "version": 1,
+      "type_origins": {
+        "composition_routed_stake::CompositionRoutedStakeCreatedEvent": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+        "composition_routed_stake::CompositionRoutedStakeRegisteredEvent": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+        "composition_routed_stake::CompositionRoutedStakeRestakedEvent": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+        "composition_routed_stake::CompositionRoutedStakeUnregisteredEvent": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c",
+        "composition_routed_stake::CompositionRoutedStakeUnstakedEvent": "0xd361472a3ec3096eae15ff17c9b062bbf6f2f8badebcb89ce33c6af53d05860c"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "routed_stake": {
+          "upgraded_id": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "composition_royalty_pool_action": {
+      "original_id": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24",
+      "published_at": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24",
+      "version": 1,
+      "type_origins": {
+        "composition_royalty_pool::CompositionCoinsDepositedEvent": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24",
+        "composition_royalty_pool::CompositionFundsDepositedEvent": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24",
+        "composition_royalty_pool::CompositionRoyaltyPoolCreatedEvent": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "composition_royalty_pool_plugin": {
+      "original_id": "0x97b4db34a28a4ca80cb50a1c862710047b3a5df9d21b2e042e30ba38292836a9",
+      "published_at": "0x97b4db34a28a4ca80cb50a1c862710047b3a5df9d21b2e042e30ba38292836a9",
+      "version": 1,
+      "type_origins": {
+        "witness::Witness": "0x97b4db34a28a4ca80cb50a1c862710047b3a5df9d21b2e042e30ba38292836a9"
+      },
+      "linkage": {
+        "composition_royalty_pool_action": {
+          "upgraded_id": "0x795e530c4c0ee5072e75b32c93b0f35b00c3eb24b06c9d0586317bec4a0a9c24",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        },
+        "vault": {
+          "upgraded_id": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+          "version": 1
+        }
+      }
+    },
+    "country_code": {
+      "original_id": "0x69fb214a74d5253971a45b2d07f83f13ae96992dd38198d7bacb21e1f5fb5f81",
+      "published_at": "0x69fb214a74d5253971a45b2d07f83f13ae96992dd38198d7bacb21e1f5fb5f81",
+      "version": 1,
+      "type_origins": {
+        "country_code::CountryCode": "0x69fb214a74d5253971a45b2d07f83f13ae96992dd38198d7bacb21e1f5fb5f81"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "cover_art": {
+      "original_id": "0x97ae14cddfc69650c81022cbe10012b06f3065cf81077bda2c784706bbe129cd",
+      "published_at": "0x97ae14cddfc69650c81022cbe10012b06f3065cf81077bda2c784706bbe129cd",
+      "version": 1,
+      "type_origins": {
+        "cover_art::CoverArt": "0x97ae14cddfc69650c81022cbe10012b06f3065cf81077bda2c784706bbe129cd"
+      },
+      "linkage": {
+        "ori": {
+          "upgraded_id": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "credit": {
+      "original_id": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4",
+      "published_at": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4",
+      "version": 1,
+      "type_origins": {
+        "credit::Credit": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "genre": {
+      "original_id": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+      "published_at": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+      "version": 1,
+      "type_origins": {
+        "genre::Genre": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+        "genre::GenreCreatedEvent": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+        "genre::GenreKey": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+        "genre::GenreRegistry": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+        "genre::GenreRegistryCreatedEvent": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "language_code": {
+      "original_id": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36",
+      "published_at": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36",
+      "version": 1,
+      "type_origins": {
+        "language_code::LanguageCode": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "minato": {
+      "original_id": "0xcdf58ed7e4580118a6a3f2a8077abffe633c551b2f19e95ce01685d42f90b8d9",
+      "published_at": "0xcdf58ed7e4580118a6a3f2a8077abffe633c551b2f19e95ce01685d42f90b8d9",
+      "version": 1,
+      "type_origins": {},
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 57
+        }
+      }
+    },
+    "musicos": {
+      "original_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+      "published_at": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+      "version": 1,
+      "type_origins": {
+        "composition::Composition": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "composition::CompositionAdminCap": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "composition::CompositionAdminCapKey": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "composition::CompositionPublishedEvent": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "composition::CompositionState": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "recording::Recording": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "recording::RecordingAdminCap": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "recording::RecordingAdminCapKey": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "recording::RecordingPublishedEvent": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "recording::RecordingState": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::Release": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseAdminCap": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseAdminCapKey": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseKey": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleasePublishedEvent": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseRegistry": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseRegistryCreatedEvent": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::ReleaseState": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "release::TrackAllocation": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "track::Track": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+        "track::TrackState": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67"
+      },
+      "linkage": {
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "ori": {
+      "original_id": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+      "published_at": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+      "version": 1,
+      "type_origins": {
+        "confidentiality::Confidentiality": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+        "data::WalrusBlob": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+        "data::WalrusQuilt": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+        "data::WalrusQuiltPatch": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        }
+      }
+    },
+    "party_cta": {
+      "original_id": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d",
+      "published_at": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d",
+      "version": 1,
+      "type_origins": {
+        "party_cta::Cta": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d",
+        "party_cta::CtasClearedEvent": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d",
+        "party_cta::CtasKey": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d",
+        "party_cta::CtasSetEvent": "0xee916ffdb352b1cb3c829479f919ff2fb93fde079ac83136f8e2cfa5d688503d"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_genre": {
+      "original_id": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01",
+      "published_at": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01",
+      "version": 1,
+      "type_origins": {
+        "party_genre::GenreAddedEvent": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01",
+        "party_genre::GenreRemovedEvent": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01",
+        "party_genre::GenresClearedEvent": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01",
+        "party_genre::GenresKey": "0x53acdf1dc66214dce13b2643b46d22956638e961344dcd389197770e3a424e01"
+      },
+      "linkage": {
+        "genre": {
+          "upgraded_id": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+          "version": 1
+        },
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_typed_set": {
+          "upgraded_id": "0x75550cb9772581d73b3585f6ac6e9af689bcf13b6a682883143f38a1edd8dc14",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_media": {
+      "original_id": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e",
+      "published_at": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e",
+      "version": 1,
+      "type_origins": {
+        "party_media::Media": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e",
+        "party_media::MediaClearedEvent": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e",
+        "party_media::MediaKey": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e",
+        "party_media::MediaSetEvent": "0x7be7be101a35ac4c0b47668fff6dcc6b997b0e092bfdf021c585f3ebfb142a7e"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_music": {
+      "original_id": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+      "published_at": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+      "version": 1,
+      "type_origins": {
+        "party_music::AmazonMusicData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::AppleMusicData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::AudiomackData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::BandcampData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::DeezerData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::SoundCloudData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::SpotifyData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2",
+        "party_music::TidalData": "0xabc47ccb7ef9d96be1e4cc236aa4017fce125a7decd2dba41b1d1eedec42cda2"
+      },
+      "linkage": {
+        "pkg_platform_link": {
+          "upgraded_id": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_platform_link": {
+      "original_id": "0x8b3acdd68b88a533db6827255019f7041f7f9b543e0917d4c91b4efd74ad2f8f",
+      "published_at": "0x8b3acdd68b88a533db6827255019f7041f7f9b543e0917d4c91b4efd74ad2f8f",
+      "version": 1,
+      "type_origins": {
+        "party_platform_link::LinkClearedEvent": "0x8b3acdd68b88a533db6827255019f7041f7f9b543e0917d4c91b4efd74ad2f8f",
+        "party_platform_link::LinkSetEvent": "0x8b3acdd68b88a533db6827255019f7041f7f9b543e0917d4c91b4efd74ad2f8f"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_platform_link": {
+          "upgraded_id": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_pro_link": {
+      "original_id": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+      "published_at": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+      "version": 1,
+      "type_origins": {
+        "party_pro_link::BookingPageData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::EpkData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::KofiData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::LabelPageData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::ManagementPageData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::PatreonData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::PublisherPageData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::SubstackData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f",
+        "party_pro_link::WebsiteData": "0x05abf41ac85028c4a9b5e3c8d7ba9cd2255629482e72fc54efe9d1be01db1e7f"
+      },
+      "linkage": {
+        "pkg_platform_link": {
+          "upgraded_id": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_profile": {
+      "original_id": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2",
+      "published_at": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2",
+      "version": 1,
+      "type_origins": {
+        "party_profile::PartyProfileClearedEvent": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2",
+        "party_profile::PartyProfileSetEvent": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2",
+        "party_profile::Profile": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2",
+        "party_profile::ProfileKey": "0x7c3648386f35895403a4cabcbe15866bf66442de436ea0510c648acf530e2eb2"
+      },
+      "linkage": {
+        "country_code": {
+          "upgraded_id": "0x69fb214a74d5253971a45b2d07f83f13ae96992dd38198d7bacb21e1f5fb5f81",
+          "version": 1
+        },
+        "language_code": {
+          "upgraded_id": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36",
+          "version": 1
+        },
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_roles": {
+      "original_id": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+      "published_at": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+      "version": 1,
+      "type_origins": {
+        "party_roles::ArtistRole": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+        "party_roles::RoleAddedEvent": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+        "party_roles::RoleRemovedEvent": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+        "party_roles::RolesClearedEvent": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf",
+        "party_roles::RolesKey": "0x24aec83ec238b65b591798d0c6ae976a5ca19a918b4c6a3157b96068a5ea9dcf"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_typed_set": {
+          "upgraded_id": "0x75550cb9772581d73b3585f6ac6e9af689bcf13b6a682883143f38a1edd8dc14",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_social": {
+      "original_id": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+      "published_at": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+      "version": 1,
+      "type_origins": {
+        "party_social::DiscordData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::FacebookData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::InstagramData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::RedditData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::TelegramData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::ThreadsData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::TikTokData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::TwitchData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::XData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0",
+        "party_social::YouTubeData": "0x96b71cf7c631db0add13a19565570c8a22355ef5b59d3bde76ebd0717ef448f0"
+      },
+      "linkage": {
+        "pkg_platform_link": {
+          "upgraded_id": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_tags": {
+      "original_id": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a",
+      "published_at": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a",
+      "version": 1,
+      "type_origins": {
+        "party_tags::TagAddedEvent": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a",
+        "party_tags::TagRemovedEvent": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a",
+        "party_tags::TagsClearedEvent": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a",
+        "party_tags::TagsKey": "0x928a85e6204efafdbcab29b83efcd1e5edc463a6f870d7968ca40720168e383a"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_typed_set": {
+          "upgraded_id": "0x75550cb9772581d73b3585f6ac6e9af689bcf13b6a682883143f38a1edd8dc14",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "party_wallet_action": {
+      "original_id": "0xbd3fbf4a6bb5c5a68f3060188f8ae17039fa8e38802bf8058230cf19812d3f59",
+      "published_at": "0xbd3fbf4a6bb5c5a68f3060188f8ae17039fa8e38802bf8058230cf19812d3f59",
+      "version": 1,
+      "type_origins": {
+        "party_wallet::CoinsReceivedEvent": "0xbd3fbf4a6bb5c5a68f3060188f8ae17039fa8e38802bf8058230cf19812d3f59",
+        "party_wallet::FundsRedeemedEvent": "0xbd3fbf4a6bb5c5a68f3060188f8ae17039fa8e38802bf8058230cf19812d3f59",
+        "party_wallet::ObjectReceivedEvent": "0xbd3fbf4a6bb5c5a68f3060188f8ae17039fa8e38802bf8058230cf19812d3f59"
+      },
+      "linkage": {
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "partyos": {
+      "original_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+      "published_at": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+      "version": 1,
+      "type_origins": {
+        "party::Membership": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::MembershipKey": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::Party": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyAdminCap": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyAdminCapKey": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyCreatedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupInviteCreatedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupInviteDeclinedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupInviteRevokedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupMembershipAcceptedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupMembershipLeftEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyGroupMembershipRemovedEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyKind": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PartyNameSetEvent": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PendingInviteKey": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+        "party::PendingMembershipKey": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "pkg_bps": {
+      "original_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+      "published_at": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+      "version": 1,
+      "type_origins": {
+        "bps::BPS": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6"
+      },
+      "linkage": {}
+    },
+    "pkg_hikida": {
+      "original_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+      "published_at": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+      "version": 1,
+      "type_origins": {},
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 57
+        }
+      }
+    },
+    "pkg_per_track": {
+      "original_id": "0xc0520ca3a1a415ee37d99e34d773e395f49ac4e1e8fec70058eb62e079efd054",
+      "published_at": "0xc0520ca3a1a415ee37d99e34d773e395f49ac4e1e8fec70058eb62e079efd054",
+      "version": 1,
+      "type_origins": {
+        "per_track::PerTrack": "0xc0520ca3a1a415ee37d99e34d773e395f49ac4e1e8fec70058eb62e079efd054"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "pkg_platform_link": {
+      "original_id": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+      "published_at": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+      "version": 1,
+      "type_origins": {
+        "platform_link::PlatformLink": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+        "platform_link::PlatformLinkKey": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+        "platform_link::PlatformLinkRemovedEvent": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d",
+        "platform_link::PlatformLinkSetEvent": "0xacec196ad739aa3c5f4be493cb4e8df90aa779b2df24811b3f98109d7fce4d8d"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "pkg_share": {
+      "original_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+      "published_at": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+      "version": 1,
+      "type_origins": {
+        "share::ShareInitializedEvent": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "pkg_typed_set": {
+      "original_id": "0x75550cb9772581d73b3585f6ac6e9af689bcf13b6a682883143f38a1edd8dc14",
+      "published_at": "0x75550cb9772581d73b3585f6ac6e9af689bcf13b6a682883143f38a1edd8dc14",
+      "version": 1,
+      "type_origins": {},
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 57
+        }
+      }
+    },
+    "record": {
+      "original_id": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+      "published_at": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+      "version": 1,
+      "type_origins": {
+        "pressing::Pressing": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingAdminCap": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingAdminCapKey": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingCreatedEvent": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingDistributorAuthorizedEvent": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingDistributorRevokedEvent": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::PressingKey": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "pressing::RecordPurchasedEvent": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "record::Record": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "record::RecordDestroyedEvent": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+        "record::RecordKey": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "record_shop": {
+      "original_id": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+      "published_at": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+      "version": 1,
+      "type_origins": {
+        "listing::Listing": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::ListingCreatedEvent": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::ListingKey": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::ListingPriceChangedEvent": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::ListingStateChangedEvent": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::Pricing": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::RecordSoldEvent": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "listing::State": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1",
+        "witness::Witness": "0x6eb622211786516988c6ee8e7c0403b4ef64a8c004d654494122e29c103060e1"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "record": {
+          "upgraded_id": "0xf51af0e4a29d764a6880db65d99aaa7d1802774f7be18e7220a05a2d673b4743",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_advisory": {
+      "original_id": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238",
+      "published_at": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238",
+      "version": 1,
+      "type_origins": {
+        "recording_advisory::ExplicitRating": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238",
+        "recording_advisory::ExtensionKey": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238",
+        "recording_advisory::RecordingAdvisoryRatingClearedEvent": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238",
+        "recording_advisory::RecordingAdvisoryRatingSetEvent": "0xaf50ef46545e86e6e9e532649323211c5b5c94e47b677d80285c3a92102e3238"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_credits": {
+      "original_id": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+      "published_at": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+      "version": 1,
+      "type_origins": {
+        "recording_credits::CreditAddedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::CreditRemovedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::ExtensionKey": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::FeaturedArtistAddedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::FeaturedArtistRemovedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::PrimaryArtistAddedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::PrimaryArtistRemovedEvent": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_credits::RecordingCredits": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_party_role::RecordingPartyRole": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f",
+        "recording_party_role::RecordingPartyRoleLevel": "0x5e196e56a0e47c6f02e23737a5ea28a1a87f1df36936aa624f8bffeed95f2d7f"
+      },
+      "linkage": {
+        "credit": {
+          "upgraded_id": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_engine_session": {
+      "original_id": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+      "published_at": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+      "version": 1,
+      "type_origins": {
+        "recording_engine_session::EngineSession": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+        "recording_engine_session::EngineSessionSetEvent": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+        "recording_engine_session::EngineSessionUnsetEvent": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+        "recording_engine_session::ExtensionKey": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0",
+        "recording_engine_session::Stem": "0x5e330ba7c23338f6f27400df97240d0b2b569a957f86dbfd6775b845280057b0"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_genre": {
+      "original_id": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732",
+      "published_at": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732",
+      "version": 1,
+      "type_origins": {
+        "recording_genre::ExtensionKey": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732",
+        "recording_genre::RecordingGenreAddedEvent": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732",
+        "recording_genre::RecordingGenreRemovedEvent": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732",
+        "recording_genre::RecordingGenresClearedEvent": "0x3d4751aec7ece56e51f82a7d725b6ce47768f36a41beba475e2cca269e7cf732"
+      },
+      "linkage": {
+        "genre": {
+          "upgraded_id": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_language": {
+      "original_id": "0x4bdef95a64af8900065f24c34a66ccf694c96de4324e7fadf491a5bf73a899bf",
+      "published_at": "0x4bdef95a64af8900065f24c34a66ccf694c96de4324e7fadf491a5bf73a899bf",
+      "version": 1,
+      "type_origins": {
+        "recording_language::ExtensionKey": "0x4bdef95a64af8900065f24c34a66ccf694c96de4324e7fadf491a5bf73a899bf",
+        "recording_language::RecordingLanguagesClearedEvent": "0x4bdef95a64af8900065f24c34a66ccf694c96de4324e7fadf491a5bf73a899bf",
+        "recording_language::RecordingLanguagesSetEvent": "0x4bdef95a64af8900065f24c34a66ccf694c96de4324e7fadf491a5bf73a899bf"
+      },
+      "linkage": {
+        "language_code": {
+          "upgraded_id": "0xac318126565a2fab608984a091b3582ba9cda6c32232f567eef50277c5042c36",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_master": {
+      "original_id": "0x35494a8a33181347fc73f7dac260f0b2fafb2e74dc1a2b3b42311ff668cdbc66",
+      "published_at": "0x35494a8a33181347fc73f7dac260f0b2fafb2e74dc1a2b3b42311ff668cdbc66",
+      "version": 1,
+      "type_origins": {
+        "recording_master::ExtensionKey": "0x35494a8a33181347fc73f7dac260f0b2fafb2e74dc1a2b3b42311ff668cdbc66",
+        "recording_master::MasterSetEvent": "0x35494a8a33181347fc73f7dac260f0b2fafb2e74dc1a2b3b42311ff668cdbc66",
+        "recording_master::MasterUnsetEvent": "0x35494a8a33181347fc73f7dac260f0b2fafb2e74dc1a2b3b42311ff668cdbc66"
+      },
+      "linkage": {
+        "audio": {
+          "upgraded_id": "0x7b143c3408e5fc8964e7ee696c9d4b63b6d0464347797e32bfa43275f09a3b08",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_royalty_pool_action": {
+      "original_id": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229",
+      "published_at": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229",
+      "version": 1,
+      "type_origins": {
+        "recording_royalty_pool::RecordingCoinsDepositedEvent": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229",
+        "recording_royalty_pool::RecordingFundsDepositedEvent": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229",
+        "recording_royalty_pool::RecordingRoyaltyPoolCreatedEvent": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "recording_royalty_pool_plugin": {
+      "original_id": "0xe0061c18dd62e884b3bc34e9588290a0e3e75dafcff3098441fe7ee30e33b44c",
+      "published_at": "0xe0061c18dd62e884b3bc34e9588290a0e3e75dafcff3098441fe7ee30e33b44c",
+      "version": 1,
+      "type_origins": {
+        "witness::Witness": "0xe0061c18dd62e884b3bc34e9588290a0e3e75dafcff3098441fe7ee30e33b44c"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "recording_royalty_pool_action": {
+          "upgraded_id": "0x45bb431d6763a3310283062c292770ba2bb4f0d7c015bbfcb91259de48a54229",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        },
+        "vault": {
+          "upgraded_id": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+          "version": 1
+        }
+      }
+    },
+    "recording_streaming_transcode": {
+      "original_id": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98",
+      "published_at": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98",
+      "version": 1,
+      "type_origins": {
+        "recording_streaming_transcode::ExtensionKey": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98",
+        "recording_streaming_transcode::RecordingStreamingTranscodeClearedEvent": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98",
+        "recording_streaming_transcode::RecordingStreamingTranscodeSetEvent": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98",
+        "recording_streaming_transcode::StreamingTranscode": "0x4e06f832bf66aa33b80bf5055b01105de68205434f817afe60ad5fab55c58e98"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "ori": {
+          "upgraded_id": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_cover_art": {
+      "original_id": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+      "published_at": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+      "version": 1,
+      "type_origins": {
+        "release_cover_art::CoverSnapshot": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ExtensionKey": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ReleaseCoverArt": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ReleaseCoverArtSetEvent": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ReleaseCoverArtUnsetEvent": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ReleaseTrackCoverArtSetEvent": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad",
+        "release_cover_art::ReleaseTrackCoverArtUnsetEvent": "0x45ece832ba6d87b46e770e370cc0d3207ee30e9d4caf30bee8d9536b494538ad"
+      },
+      "linkage": {
+        "cover_art": {
+          "upgraded_id": "0x97ae14cddfc69650c81022cbe10012b06f3065cf81077bda2c784706bbe129cd",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "ori": {
+          "upgraded_id": "0x51792b9adb9a5d05d7c4d74d7d0cb5aefc5639afa80c0089399cab8b99752e60",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_per_track": {
+          "upgraded_id": "0xc0520ca3a1a415ee37d99e34d773e395f49ac4e1e8fec70058eb62e079efd054",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_credits": {
+      "original_id": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+      "published_at": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+      "version": 1,
+      "type_origins": {
+        "release_credits::ExtensionKey": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+        "release_credits::ReleaseCreditAddedEvent": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+        "release_credits::ReleaseCreditRemovedEvent": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+        "release_credits::ReleaseCredits": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82",
+        "release_party_role::ReleasePartyRole": "0x433880d8f55568b97add2be734c657c8c91adcc3da978fc2aa9bccc1c17bdb82"
+      },
+      "linkage": {
+        "credit": {
+          "upgraded_id": "0xe3fa36c9dd8cf22d0b622c49b3f566520aefb93cbf417ed2416dbdb6dae65dd4",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "partyos": {
+          "upgraded_id": "0x4193ae54fa991730b97cc322aa210ce6e7096fe2e5d6ab717a267e1791803ee7",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_description": {
+      "original_id": "0x99ee52a1acd70b277c2e834bcb7fa48b72788eb0dfd98f54bab125c908c376f6",
+      "published_at": "0x99ee52a1acd70b277c2e834bcb7fa48b72788eb0dfd98f54bab125c908c376f6",
+      "version": 1,
+      "type_origins": {
+        "release_description::ExtensionKey": "0x99ee52a1acd70b277c2e834bcb7fa48b72788eb0dfd98f54bab125c908c376f6",
+        "release_description::ReleaseDescriptionClearedEvent": "0x99ee52a1acd70b277c2e834bcb7fa48b72788eb0dfd98f54bab125c908c376f6",
+        "release_description::ReleaseDescriptionSetEvent": "0x99ee52a1acd70b277c2e834bcb7fa48b72788eb0dfd98f54bab125c908c376f6"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_dsp_link": {
+      "original_id": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+      "published_at": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+      "version": 1,
+      "type_origins": {
+        "release_dsp_link::DspLinkData": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseDspLinkClearedEvent": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseDspLinkSetEvent": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseLinkKey": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseTrackDspLinkClearedEvent": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseTrackDspLinkSetEvent": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::ReleaseTrackDspLinksClearedEvent": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e",
+        "release_dsp_link::TrackLinksKey": "0xc3f5e8ad2db4d0f35667f2ae6a19f7f71e7254659f0981b57ea01888b3caf97e"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_per_track": {
+          "upgraded_id": "0xc0520ca3a1a415ee37d99e34d773e395f49ac4e1e8fec70058eb62e079efd054",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_genre": {
+      "original_id": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42",
+      "published_at": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42",
+      "version": 1,
+      "type_origins": {
+        "release_genre::ExtensionKey": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42",
+        "release_genre::ReleaseGenreAddedEvent": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42",
+        "release_genre::ReleaseGenreRemovedEvent": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42",
+        "release_genre::ReleaseGenresClearedEvent": "0xfc5939ee3e31a2aba2906ecb35b67f87c8999557bff2ed409d6ef9307188ab42"
+      },
+      "linkage": {
+        "genre": {
+          "upgraded_id": "0xeda153873304f89c694ff97bc3fa81f07895f68c94a588fd49196f741793016f",
+          "version": 1
+        },
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_kind": {
+      "original_id": "0x714d059d3ce04e6a0e2d091b10217ed0581dc66dbfbefce5d0166d02e92c8468",
+      "published_at": "0x714d059d3ce04e6a0e2d091b10217ed0581dc66dbfbefce5d0166d02e92c8468",
+      "version": 1,
+      "type_origins": {
+        "release_kind::ExtensionKey": "0x714d059d3ce04e6a0e2d091b10217ed0581dc66dbfbefce5d0166d02e92c8468",
+        "release_kind::ReleaseKindSetEvent": "0x714d059d3ce04e6a0e2d091b10217ed0581dc66dbfbefce5d0166d02e92c8468",
+        "release_kind::ReleaseKindUnsetEvent": "0x714d059d3ce04e6a0e2d091b10217ed0581dc66dbfbefce5d0166d02e92c8468"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_revenue_distributor_action": {
+      "original_id": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+      "published_at": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+      "version": 1,
+      "type_origins": {
+        "release_revenue_distributor::ReleaseCoinsReceivedEvent": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+        "release_revenue_distributor::ReleaseFundsRedeemedEvent": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+        "release_revenue_distributor::ReleaseRevenueDistributedEvent": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+        "release_revenue_distributor::ReleaseTrackRevenueDistributedEvent": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "release_revenue_distributor_plugin": {
+      "original_id": "0xed87ae465856b775927879cffb7baa25d2ca0ca06b46b704c63d3b65e6d3b651",
+      "published_at": "0xed87ae465856b775927879cffb7baa25d2ca0ca06b46b704c63d3b65e6d3b651",
+      "version": 1,
+      "type_origins": {
+        "witness::Witness": "0xed87ae465856b775927879cffb7baa25d2ca0ca06b46b704c63d3b65e6d3b651"
+      },
+      "linkage": {
+        "musicos": {
+          "upgraded_id": "0x02dda3f548d9d38a9122a714663b4d304dad03499879f270f5769bc96e235c67",
+          "version": 1
+        },
+        "pkg_bps": {
+          "upgraded_id": "0xea4eda4f2120d8f7f726a5c558d0612a92f64d75197979de5902215bca0a5ef6",
+          "version": 1
+        },
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "release_revenue_distributor_action": {
+          "upgraded_id": "0x0f8da651529d2e47440f934bdf1d8a857d244c6fcff10670a59842af6a4a7f48",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        },
+        "vault": {
+          "upgraded_id": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+          "version": 1
+        }
+      }
+    },
+    "routed_stake": {
+      "original_id": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+      "published_at": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+      "version": 1,
+      "type_origins": {
+        "routed_stake::RoutedStake": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeCreatedEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeKey": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeRegisteredEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeRestakedEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeSweptEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeUnregisteredEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1",
+        "routed_stake::RoutedStakeUnstakedEvent": "0xa7bcda2e2db97e4fb8f0c99ffd38332cfaf3626ae6afb012a2b40d0318e642f1"
+      },
+      "linkage": {
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "royalty_pool": {
+          "upgraded_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "royalty_pool": {
+      "original_id": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+      "published_at": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+      "version": 1,
+      "type_origins": {
+        "pool::RoyaltyClaimedEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyDepositedEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyPool": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyPoolCoinsRecoveredEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyPoolCreatedEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyPoolFundsSettledEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::RoyaltyPoolKey": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::StakeRegisteredEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "pool::StakeUnregisteredEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "stake::Registration": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "stake::Stake": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "stake::StakeCreatedEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31",
+        "stake::StakeDestroyedEvent": "0xd6d13d85d5748ce6faa6b2670e5b8039aa7bf8894735c9506ec78a578a7f9b31"
+      },
+      "linkage": {
+        "pkg_hikida": {
+          "upgraded_id": "0xc69d11860ccfbe50b558b15e8c026735995274d09e19c66c43c0870e6df79f3e",
+          "version": 1
+        },
+        "pkg_share": {
+          "upgraded_id": "0x8f0276fb3d3c2e332059913495a5b08484ab0f328296e1bb621c220db5c72ce1",
+          "version": 1
+        },
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    },
+    "std": {
+      "original_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "published_at": "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "version": 25,
+      "type_origins": {
+        "ascii::Char": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "ascii::String": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "bit_vector::BitVector": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "fixed_point32::FixedPoint32": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "internal::Permit": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "option::Option": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "string::String": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "type_name::TypeName": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "uq32_32::UQ32_32": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "uq64_64::UQ64_64": "0x0000000000000000000000000000000000000000000000000000000000000001"
+      },
+      "linkage": {}
+    },
+    "sui": {
+      "original_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "published_at": "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "version": 58,
+      "type_origins": {
+        "accumulator::AccumulatorRoot": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator::Key": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator::U128": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_metadata::AccumulatorObjectCountKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_metadata::Metadata": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_metadata::MetadataKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_metadata::Owner": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_metadata::OwnerKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "accumulator_settlement::EventStreamHead": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "address_alias::AddressAliasState": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "address_alias::AddressAliases": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "address_alias::AliasKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::Allowance": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::AllowanceCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::AllowanceProposal": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::AllowanceWithdrawal": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::RateLimit": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::Settings": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::SettingsPermit": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::SpendPermit": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "allowance::Window": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "authenticator_state::ActiveJwk": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "authenticator_state::AuthenticatorState": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "authenticator_state::AuthenticatorStateInner": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "authenticator_state::JWK": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "authenticator_state::JwkId": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bag::Bag": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "balance::Balance": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "balance::Supply": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bcs::BCS": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bls12381::G1": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bls12381::G2": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bls12381::GT": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bls12381::Scalar": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "bls12381::UncompressedG1": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "borrow::Borrow": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "borrow::Referent": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "clock::Clock": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::Coin": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::CoinMetadata": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::CurrencyCreated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::DenyCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::DenyCapV2": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::RegulatedCoinMetadata": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin::TreasuryCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::Borrow": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::CoinRegistry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::Currency": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::CurrencyInitializer": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::CurrencyKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::ExtraField": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::LegacyMetadataKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::MetadataCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::MetadataCapState": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::RegulatedState": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "coin_registry::SupplyState": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "config::Config": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "config::Setting": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "config::SettingData": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::AddressKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::ConfigKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::ConfigWriteCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::DenyList": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::GlobalPauseKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::PerTypeConfigCreated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "deny_list::PerTypeList": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "derived_object::Claimed": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "derived_object::ClaimedStatus": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "derived_object::DerivedObjectKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display::Display": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display::DisplayCreated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display::VersionUpdated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display_registry::Display": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display_registry::DisplayCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display_registry::DisplayKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display_registry::DisplayRegistry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "display_registry::SystemMigrationCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "dynamic_field::Field": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "dynamic_object_field::Wrapper": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "forwarding_address::ForwardingAddressRegistry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "funds_accumulator::Withdrawal": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "groth16::Curve": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "groth16::PreparedVerifyingKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "groth16::ProofPoints": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "groth16::PublicProofInputs": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "group_ops::Element": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::Borrow": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::Item": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::ItemDelisted": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::ItemListed": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::ItemPurchased": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::Kiosk": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::KioskOwnerCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::Listing": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::Lock": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk::PurchaseCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk_extension::Extension": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "kiosk_extension::ExtensionKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "linked_table::LinkedTable": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "linked_table::Node": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "nitro_attestation::NitroAttestationDocument": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "nitro_attestation::PCREntry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "object::ID": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "object::UID": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "object_bag::ObjectBag": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "object_table::ObjectTable": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "package::Publisher": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "package::UpgradeCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "package::UpgradeReceipt": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "package::UpgradeTicket": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "party::Party": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "party::Permissions": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "priority_queue::Entry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "priority_queue::PriorityQueue": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "random::Random": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "random::RandomGenerator": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "random::RandomInner": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "ristretto255::G": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "ristretto255::Scalar": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "scratch::BorrowMarker": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "scratch::BorrowMarkerKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "scratch::Permit": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "sui::SUI": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "table::Table": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "table_vec::TableVec": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::ActionRequest": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::RuleKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::Token": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::TokenPolicy": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::TokenPolicyCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "token::TokenPolicyCreated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer::Receiving": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::RuleKey": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::TransferPolicy": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::TransferPolicyCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::TransferPolicyCreated": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::TransferPolicyDestroyed": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "transfer_policy::TransferRequest": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "tx_context::TxContext": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "url::Url": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "vec_map::Entry": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "vec_map::VecMap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "vec_set::VecSet": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "versioned::VersionChangeCap": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "versioned::Versioned": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "zklogin_verified_id::VerifiedID": "0x0000000000000000000000000000000000000000000000000000000000000002",
+        "zklogin_verified_issuer::VerifiedIssuer": "0x0000000000000000000000000000000000000000000000000000000000000002"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 0
+        }
+      }
+    },
+    "vault": {
+      "original_id": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+      "published_at": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+      "version": 1,
+      "type_origins": {
+        "vault::AuthorizedPluginKey": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::PluginAuthorizedEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::PluginRevokedEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::Vault": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultAdminCap": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultAdminCapKey": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultCapabilityRestoredEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultCapabilityWithdrawnEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultCreatedEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultKey": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultRegistry": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff",
+        "vault::VaultRegistryCreatedEvent": "0x9909927b5fc7d02a8b4eaf26170bcb08760d8ae67c58998650460900185f15ff"
+      },
+      "linkage": {
+        "std": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "version": 25
+        },
+        "sui": {
+          "upgraded_id": "0x0000000000000000000000000000000000000000000000000000000000000002",
+          "version": 58
+        }
+      }
+    }
+  }
+}

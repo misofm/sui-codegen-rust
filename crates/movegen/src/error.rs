@@ -17,6 +17,9 @@ pub enum Error {
     /// The dependency closure is incomplete.
     #[error("closure: {0}")]
     Closure(String),
+    /// Generation failed.
+    #[error("generate: {0}")]
+    Generate(String),
     /// Fetching from a network failed.
     #[error("fetch: {0}")]
     Fetch(String),

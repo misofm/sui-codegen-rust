@@ -1,0 +1,5 @@
+error[E0423]: expected function, found module `sui::table::borrow`
+ --> tests/ui/reference_return.rs:8:13
+  |
+8 |     let _ = sui::table::borrow(tx, d, vec![], table, 1u64);
+  |             ^^^^^^^^^^^^^^^^^^ not a function

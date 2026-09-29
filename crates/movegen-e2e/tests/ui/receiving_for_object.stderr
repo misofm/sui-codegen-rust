@@ -1,0 +1,26 @@
+error[E0277]: `ReceivingRef` cannot be passed for a Move parameter of type `Listing`
+ --> tests/ui/receiving_for_object.rs:7:56
+  |
+7 |     let _ = record_shop::listing::price(tx, d, vec![], listing);
+  |             ---------------------------                ^^^^^^^ not a `Listing`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<Listing>` is not implemented for `ReceivingRef`
+  = note: pass an `Arg<Listing>` (a previous result), an `ObjectRef` if `Listing` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: `ReceivingRef` implements trait `IntoInput<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: ?Sized> IntoInput<Receive<T>> for ReceivingRef {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<Receive<T>>`
+...
+  | impl IntoInput<crate::Receiving> for ReceivingRef {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<movegen_runtime::Receiving>`
+note: required by a bound in `price`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn price(
+  |        ----- required by a bound in this function
+...
+  |     arg0: impl __rt::IntoInput<Listing>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `price`

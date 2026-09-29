@@ -35,6 +35,23 @@ pub struct Config {
     pub networks: BTreeMap<String, NetworkConfig>,
     /// Packages by symbol name; each maps network → an id in the package's lineage.
     pub packages: BTreeMap<String, BTreeMap<String, String>>,
+    /// Generation options.
+    #[serde(default)]
+    pub generate: GenerateConfig,
+}
+
+/// `[generate]`: what to emit and where.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GenerateConfig {
+    /// Output directory for the generated module tree (default `src/generated`), relative to
+    /// the config file.
+    #[serde(default)]
+    pub output: Option<PathBuf>,
+    /// Packages (`name`) or modules (`name::module`) whose public/entry functions get call
+    /// builders. Default: every configured package.
+    #[serde(default)]
+    pub functions: Option<Vec<String>>,
 }
 
 /// One network.

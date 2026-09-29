@@ -1,0 +1,131 @@
+error[E0277]: `movegen_runtime::Arg<u64>` cannot be passed for a Move parameter of type `Listing`
+ --> tests/ui/wrong_result_type.rs:8:59
+  |
+8 |     let _ = record_shop::listing::purchase(tx, d, vec![], amount, amount, balance, amount);
+  |             ------------------------------                ^^^^^^ not a `Listing`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<Listing>` is not implemented for `movegen_runtime::Arg<u64>`
+  = note: pass an `Arg<Listing>` (a previous result), an `ObjectRef` if `Listing` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: `movegen_runtime::Arg<T>` implements trait `IntoInput<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: ?Sized> IntoInput<T> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<T>`
+...
+  | impl<T: Key + ?Sized> IntoInput<Any> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<movegen_runtime::Any>`
+note: required by a bound in `movegen_e2e::generated::record_shop::listing::purchase`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn purchase(
+  |        -------- required by a bound in this function
+...
+  |     arg0: impl __rt::IntoInput<Listing>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `purchase`
+
+error[E0277]: `movegen_runtime::Arg<u64>` cannot be passed for a Move parameter of type `Pressing`
+ --> tests/ui/wrong_result_type.rs:8:67
+  |
+8 |     let _ = record_shop::listing::purchase(tx, d, vec![], amount, amount, balance, amount);
+  |             ------------------------------                        ^^^^^^ not a `Pressing`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<Pressing>` is not implemented for `movegen_runtime::Arg<u64>`
+  = note: pass an `Arg<Pressing>` (a previous result), an `ObjectRef` if `Pressing` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: `movegen_runtime::Arg<T>` implements trait `IntoInput<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: ?Sized> IntoInput<T> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<T>`
+...
+  | impl<T: Key + ?Sized> IntoInput<Any> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<movegen_runtime::Any>`
+note: required by a bound in `movegen_e2e::generated::record_shop::listing::purchase`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn purchase(
+  |        -------- required by a bound in this function
+...
+  |     arg1: impl __rt::IntoInput<super::super::record::pressing::Pressing>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `purchase`
+
+error[E0277]: `movegen_runtime::Arg<u64>` cannot be passed for a Move parameter of type `Pricing`
+ --> tests/ui/wrong_result_type.rs:8:84
+  |
+8 |     let _ = record_shop::listing::purchase(tx, d, vec![], amount, amount, balance, amount);
+  |             ------------------------------                                         ^^^^^^ not a `Pricing`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<Pricing>` is not implemented for `movegen_runtime::Arg<u64>`
+  = note: pass an `Arg<Pricing>` (a previous result), an `ObjectRef` if `Pricing` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: `movegen_runtime::Arg<T>` implements trait `IntoInput<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: ?Sized> IntoInput<T> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<T>`
+...
+  | impl<T: Key + ?Sized> IntoInput<Any> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<movegen_runtime::Any>`
+note: required by a bound in `movegen_e2e::generated::record_shop::listing::purchase`
+ --> src/generated/record_shop/listing.rs
+  |
+  | pub fn purchase(
+  |        -------- required by a bound in this function
+...
+  |     arg3: impl __rt::IntoInput<Pricing>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `purchase`
+
+error[E0277]: `movegen_runtime::Arg<Balance>` cannot be passed for a Move parameter of type `movegen_runtime::Any`
+ --> tests/ui/wrong_result_type.rs:9:59
+  |
+9 |     let _ = sui::transfer::public_transfer(tx, d, vec![], balance, amount);
+  |             ------------------------------                ^^^^^^^ not a `movegen_runtime::Any`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<movegen_runtime::Any>` is not implemented for `movegen_runtime::Arg<Balance>`
+  = note: pass an `Arg<movegen_runtime::Any>` (a previous result), an `ObjectRef` if `movegen_runtime::Any` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: the trait `IntoInput<movegen_runtime::Any>` is implemented for `movegen_runtime::Arg<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: Key + ?Sized> IntoInput<Any> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `public_transfer`
+ --> src/generated/sui/transfer.rs
+  |
+  | pub fn public_transfer(
+  |        --------------- required by a bound in this function
+...
+  |     arg0: impl __rt::IntoInput<__rt::Any>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `public_transfer`
+
+error[E0277]: `movegen_runtime::Arg<u64>` cannot be passed for a Move parameter of type `movegen_runtime::__private::sui_sdk_types::address::Address`
+ --> tests/ui/wrong_result_type.rs:9:68
+  |
+9 |     let _ = sui::transfer::public_transfer(tx, d, vec![], balance, amount);
+  |             ------------------------------                         ^^^^^^ not a `movegen_runtime::__private::sui_sdk_types::address::Address`
+  |             |
+  |             required by a bound introduced by this call
+  |
+  = help: the trait `IntoInput<movegen_runtime::__private::sui_sdk_types::address::Address>` is not implemented for `movegen_runtime::Arg<u64>`
+  = note: pass an `Arg<movegen_runtime::__private::sui_sdk_types::address::Address>` (a previous result), an `ObjectRef` if `movegen_runtime::__private::sui_sdk_types::address::Address` is an object, a Rust value if it is pure, or a `ReceivingRef` for a `Receiving<_>` parameter
+help: `movegen_runtime::Arg<T>` implements trait `IntoInput<T>`
+ --> $WORKSPACE/crates/movegen-runtime/src/call.rs
+  |
+  | impl<T: ?Sized> IntoInput<T> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<T>`
+...
+  | impl<T: Key + ?Sized> IntoInput<Any> for Arg<T> {
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `IntoInput<movegen_runtime::Any>`
+note: required by a bound in `public_transfer`
+ --> src/generated/sui/transfer.rs
+  |
+  | pub fn public_transfer(
+  |        --------------- required by a bound in this function
+...
+  |     arg1: impl __rt::IntoInput<__sdk::Address>,
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `public_transfer`

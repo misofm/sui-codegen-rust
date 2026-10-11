@@ -1,7 +1,7 @@
 # misofm/sui-codegen-rust — plan (v2, after adversarial review)
 
-Goal: a first-party, best-in-class generator of Rust bindings for Sui Move packages. Private
-now, open source later. Priorities: correctness (spec + test driven) > DX > performance.
+Goal: a first-party, best-in-class generator of Rust bindings for Sui Move packages, open source
+under Apache-2.0. Priorities: correctness (spec + test driven) > DX > performance.
 
 Changes from v1 are marked **[v2]**. Review findings referenced as C1, H1–H5, M1–M6, L.
 

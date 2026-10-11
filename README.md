@@ -1,6 +1,6 @@
 # sui-codegen-rust
 
-First-party Rust bindings generator for Sui Move packages (private for now; will be open-sourced).
+First-party Rust bindings generator for Sui Move packages. Licensed under [Apache-2.0](LICENSE).
 
 - `crates/movegen-bytecode` — strict, wasm-clean reader for Move bytecode (format v6–v7).
 - `crates/movegen` — `movegen.toml` → lock (ABIs + per-network deployments) → generated code.

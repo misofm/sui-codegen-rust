@@ -2,7 +2,7 @@
 //!
 //! It reads exactly the tables that describe a module's ABI — handles, signatures, identifiers,
 //! addresses, constants, struct/enum/function definitions, friends — and validates-then-skips
-//! code. The behaviour mirrors `move-binary-format`'s deserializer at Sui `mainnet-v1.80.1`; each
+//! code. The behaviour mirrors `move-binary-format`'s deserializer at Sui `testnet-v1.82.1`; each
 //! check cites a rule in `docs/SPEC.md`, and the `oracle/` crate differentially tests the whole
 //! corpus against Mysten's implementation.
 //!

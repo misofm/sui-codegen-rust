@@ -1,5 +1,5 @@
 //! B-IDX-1: a port of `move-binary-format`'s `BoundsChecker` (`check_bounds.rs` at Sui
-//! `mainnet-v1.80.1`). Table-level checks run once every non-code table is read; code is checked
+//! `testnet-v1.82.1`). Table-level checks run once every non-code table is read; code is checked
 //! while it streams past ([`Code`]), so no instruction is ever stored. Signature checks scan the
 //! bytecode encoding in place.
 

@@ -2,7 +2,7 @@
 # Installs the pinned `sui` CLI into .tools/ (git-ignored). Used only for fixtures and
 # oracle tests (`sui move build`, `sui move summary`); generation itself never needs it.
 set -euo pipefail
-VERSION="${SUI_VERSION:-mainnet-v1.80.1}"
+VERSION="${SUI_VERSION:-testnet-v1.82.1}"
 root="$(cd "$(dirname "$0")/.." && pwd)"
 dest="$root/.tools/sui-$VERSION"
 if [ -x "$dest/sui" ]; then echo "$dest/sui"; exit 0; fi

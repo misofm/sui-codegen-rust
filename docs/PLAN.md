@@ -62,7 +62,7 @@ Parses Move bytecode format v6–v7 tables needed for ABIs: module handles, iden
 identifiers, datatype handles/defs (structs, enums incl. variants), field defs, function
 handles/defs (visibility, `entry`, `macro` absent on chain), signatures, constant pool; skips
 code units. Strict: bounds-checked, no panics, fuzzable, wasm-clean. Oracles: Mysten's
-`move-binary-format` normalized modules (git dep at `mainnet-v1.80.1`, dev/test only) and
+`move-binary-format` normalized modules (git dep at `testnet-v1.82.1`, dev/test only) and
 `sui move summary --bytecode` output over a corpus (0x1/0x2/0x3, DeepBook, all Miso packages).
 
 ### 3.3 IR and passes
@@ -148,7 +148,7 @@ completeness is checked at compile time; loaded from `deployments/<network>.json
    naming stability.
 8. **trybuild compile-fail**: wrong arg type, `Arg<Coin>` vs `Arg<Balance>`, reference-returning
    function builder, etc.
-9. **Fixtures** (pinned `sui` 1.80.1 binary in `.tools/`, script-installed): phantom enums,
+9. **Fixtures** (pinned `sui` 1.82.1 binary in `.tools/`, script-installed): phantom enums,
    positional, empty struct, generic constraints, hot potato, Receiving, multi/reference
    returns, private entry, FRIEND+entry, TxContext `&`/`&mut`, generic params. Upgrade semantics
    covered by the DeepBook mainnet corpus (localnet upgrade fixture deferred).
@@ -156,7 +156,7 @@ completeness is checked at compile time; loaded from `deployments/<network>.json
 
 ## 5. Milestones [v2 H5]
 - **M0** Repo, workspace, toolchain 1.97.1, CI (fmt, clippy, test, wasm32), SPEC skeleton,
-  `.tools/` pinned sui CLI, oracle harness crate (git deps at `mainnet-v1.80.1`, not in default
+  `.tools/` pinned sui CLI, oracle harness crate (git deps at `testnet-v1.82.1`, not in default
   workspace build).
 - **M1** `movegen-bytecode` + oracle tests; `refresh` from GraphQL `packageBcs` into the lock
   (Miso packages + deps, mainnet + testnet); deployments incl. system objects.

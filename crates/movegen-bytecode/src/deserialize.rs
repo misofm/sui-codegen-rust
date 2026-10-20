@@ -1,5 +1,5 @@
 //! Module deserialization, mirroring `move-binary-format`'s `deserializer.rs` at Sui
-//! `mainnet-v1.80.1` for the tables in [`CompiledModule`]. Rule ids refer to `docs/SPEC.md`.
+//! `testnet-v1.82.1` for the tables in [`CompiledModule`]. Rule ids refer to `docs/SPEC.md`.
 //!
 //! Zero-copy: everything borrows from the input. Tables are read in a fixed order — every table
 //! but function definitions, then the table-level bounds checks, then function definitions,

@@ -1,7 +1,7 @@
 # Specification
 
 Numbered rules. Every rule is referenced by at least one test (`// spec: B-HDR-1`), and the
-reference implementation for each rule is cited. Sources are pinned to Sui `mainnet-v1.80.1`
+reference implementation for each rule is cited. Sources are pinned to Sui `testnet-v1.82.1`
 (commit `782577ca40c9`), `external-crates/move/crates/move-binary-format/src/deserializer.rs`
 (abbreviated `deser.rs`).
 

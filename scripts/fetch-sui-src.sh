@@ -2,10 +2,10 @@
 # Sparse checkout of Mysten's Move crates at the pinned Sui tag into .tools/sui-src (git-ignored).
 # Only the oracle tests use it: Mysten's implementation is a test oracle, never a dependency.
 set -euo pipefail
-TAG="${SUI_TAG:-mainnet-v1.80.1}"
+TAG="${SUI_TAG:-testnet-v1.82.1}"
 root="$(cd "$(dirname "$0")/.." && pwd)"
 dest="$root/.tools/sui-src"
-if [ -d "$dest/.git" ] && [ "$(git -C "$dest" describe --tags --exact-match 2>/dev/null)" = "$TAG" ]; then
+if [ -d "$dest/.git" ] && git -C "$dest" tag --points-at HEAD | grep -qx "$TAG"; then
   echo "$dest"; exit 0
 fi
 rm -rf "$dest"
